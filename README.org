@@ -18,8 +18,8 @@
 
   Add the following in your init.el
 
-#+BEGIN_SRC emacs-lisp
-(require 'ox-rst)
+#+BEGIN_SRC lisp
+  (require 'ox-rst)
 #+END_SRC
 
 * reStructuredText export
@@ -44,460 +44,454 @@
 ** Title, Author, E-Mail and Date
 
    Org:
-#+BEGIN_SRC org-mode
-#+TITLE: This is the title of the document
-#+AUTHOR: Author
-#+EMAIL: mailaddress@example.com
-#+DATE: 2013/12/31 00:00
-#+OPTIONS: author:t date:t email:t 
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,#+TITLE: This is the title of the document
+  ,#+AUTHOR: Author
+  ,#+EMAIL: mailaddress@example.com
+  ,#+DATE: 2013/12/31 00:00
+  ,#+OPTIONS: author:t date:t email:t
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-This is the title of the document
-==================================================================
+#+BEGIN_SRC rst
+  This is the title of the document
+  ==================================================================
 
-    :Author: Author
-    :Contact: mailaddress@example.com
-    :Date: 2013/12/31 00:00
+      :Author: Author
+      :Contact: mailaddress@example.com
+      :Date: 2013/12/31 00:00
 #+END_SRC
 
 ** Headings
 
    Org:
-#+BEGIN_SRC org-mode
-* Heading 1
+#+BEGIN_EXAMPLE
+  ,* Heading 1
 
-contents 1
+  contents 1
 
-** Heading 1-1
+  ,** Heading 1-1
 
-contents 1-1
+  contents 1-1
 
-*** Heading 1-1-3
+  ,*** Heading 1-1-3
 
-contents 1-1-3
-#+END_SRC
+  contents 1-1-3
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-Heading 1
-------------------
+#+BEGIN_SRC rst
+  Heading 1
+  ------------------
 
-contents 1
+  contents 1
 
-Heading 1-1
-~~~~~~~~~~~~~~~~~~~~~~
+  Heading 1-1
+  ~~~~~~~~~~~~~~~~~~~~~~
 
-contents 1-1
+  contents 1-1
 
-Heading 1-1-3
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+  Heading 1-1-3
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-contents 1-1-3
+  contents 1-1-3
 #+END_SRC
 
 ** Table of contents
 
    Org:
-#+BEGIN_SRC org-mode
-#+OPTIONS: toc:t
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,#+OPTIONS: toc:t
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-.. contents::
+#+BEGIN_SRC rst
+  .. contents::
 
 #+END_SRC
 
 ** Lists
 
    Org:
-#+BEGIN_SRC org-mode
-** Lord of the Rings
-1. The attack of the Rohirrim
-2. Eowyn's fight with the witch king
-   + this was already my favorite scene in the book
-   + I really like Miranda Otto.
-3. Peter Jackson being shot by Legolas
-   - on DVD only
-   He makes a really funny face when it happens.
-But in the end, no individual scenes matter but the film as a whole.
-Important actors in this film are:
-- Elijah Wood :: He plays Frodo
-- Sean Austin :: He plays Sam, Frodo's friend.  I still remember
-  him very well from his role as Mikey Walsh in The Goonies.
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,** Lord of the Rings
+  1. The attack of the Rohirrim
+  2. Eowyn's fight with the witch king
+     + this was already my favorite scene in the book
+     + I really like Miranda Otto.
+  3. Peter Jackson being shot by Legolas
+     - on DVD only
+     He makes a really funny face when it happens.
+  But in the end, no individual scenes matter but the film as a whole.
+  Important actors in this film are:
+  - Elijah Wood :: He plays Frodo
+  - Sean Austin :: He plays Sam, Frodo's friend.  I still remember
+    him very well from his role as Mikey Walsh in The Goonies.
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-Lord of the Rings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#+BEGIN_SRC rst
+  Lord of the Rings
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. The attack of the Rohirrim
+  1. The attack of the Rohirrim
 
-2. Eowyn's fight with the witch king
+  2. Eowyn's fight with the witch king
 
-   - this was already my favorite scene in the book
+     - this was already my favorite scene in the book
 
-   - I really like Miranda Otto.
+     - I really like Miranda Otto.
 
-3. Peter Jackson being shot by Legolas
+  3. Peter Jackson being shot by Legolas
 
-   - on DVD only
+     - on DVD only
 
-   He makes a really funny face when it happens.
+     He makes a really funny face when it happens.
 
-But in the end, no individual scenes matter but the film as a whole.
-Important actors in this film are:
+  But in the end, no individual scenes matter but the film as a whole.
+  Important actors in this film are:
 
-Elijah Wood
-    He plays Frodo
+  Elijah Wood
+      He plays Frodo
 
-Sean Austin
-    He plays Sam, Frodo's friend.  I still remember
-    him very well from his role as Mikey Walsh in The Goonies.
+  Sean Austin
+      He plays Sam, Frodo's friend.  I still remember
+      him very well from his role as Mikey Walsh in The Goonies.
 #+END_SRC
-
 
 ** Special Characters
 
    Org:
-#+BEGIN_SRC org-mode
-special characters * asterisk \ backspace
-.. reStructuredText comment line
-#+END_SRC
+#+BEGIN_EXAMPLE
+  special characters * asterisk \ backspace
+  .. reStructuredText comment line
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-special characters \* asterisk \\ backspace
-\.. reStructuredText comment line
+#+BEGIN_SRC rst
+  special characters \* asterisk \\ backspace
+  \.. reStructuredText comment line
 #+END_SRC
 
 ** Paragraphs
 
-*note* Org line breaks =\\= will be ignored.
+   *note* Org line breaks =\\= will be ignored.
 
 *** Verse block
 
-   Org:
-#+BEGIN_SRC org-mode
-#+BEGIN_VERSE
- Great clouds overhead
-      Tiny black birds rise and fall
-      Snow covers Emacs
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_VERSE
+   Great clouds overhead
+        Tiny black birds rise and fall
+        Snow covers Emacs
 
-          -- AlexSchroeder
-#+END_VERSE
-#+END_SRC
+            -- AlexSchroeder
+  ,#+END_VERSE
+#+END_EXAMPLE
 
-   reStructuredText Line Blocks:
-#+BEGIN_SRC rst-mode
-| Great clouds overhead
-|      Tiny black birds rise and fall
-|      Snow covers Emacs
-| 
-|          -- AlexSchroeder
-| 
+    reStructuredText Line Blocks:
+#+BEGIN_SRC rst
+  | Great clouds overhead
+  |      Tiny black birds rise and fall
+  |      Snow covers Emacs
+  |
+  |          -- AlexSchroeder
+  |
 #+END_SRC
 
 *** Quote block
 
-   Org:
-#+BEGIN_SRC org-mode
-#+BEGIN_QUOTE
-Everything should be made as simple as possible,
-  but not any simpler -- Albert Einstein
-#+END_QUOTE
-#+END_SRC
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_QUOTE
+  Everything should be made as simple as possible,
+    but not any simpler -- Albert Einstein
+  ,#+END_QUOTE
+#+END_EXAMPLE
 
-   reStructuredText Literal Blocks:
-#+BEGIN_SRC rst-mode
+    reStructuredText Literal Blocks:
+#+BEGIN_SRC rst
 ::
 
     Everything should be made as simple as possible,
       but not any simpler -- Albert Einstein
 #+END_SRC
 
-   Org:
-#+BEGIN_SRC org-mode
-#+ATTR_RST: :margin 4
-#+BEGIN_QUOTE
-Everything should be made as simple as possible,
-but not any simpler -- Albert Einstein
-#+END_QUOTE
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+ATTR_RST: :margin 4
+  ,#+BEGIN_QUOTE
+  Everything should be made as simple as possible,
+  but not any simpler -- Albert Einstein
+  ,#+END_QUOTE
 
-#+ATTR_RST: :margin 8
-#+BEGIN_QUOTE
-Everything should be made as simple as possible,
-but not any simpler -- Albert Einstein
-#+END_QUOTE
+  ,#+ATTR_RST: :margin 8
+  ,#+BEGIN_QUOTE
+  Everything should be made as simple as possible,
+  but not any simpler -- Albert Einstein
+  ,#+END_QUOTE
+#+END_EXAMPLE
+
+    reStructuredText Block Quotes:
+#+BEGIN_SRC rst
+  Everything should be made as simple as possible,
+  but not any simpler -- Albert Einstein
+
+      Everything should be made as simple as possible,
+      but not any simpler -- Albert Einstein
 #+END_SRC
 
-   reStructuredText Block Quotes:
-#+BEGIN_SRC rst-mode
-    Everything should be made as simple as possible,
-    but not any simpler -- Albert Einstein
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+ATTR_RST: :directive note
+  ,#+BEGIN_QUOTE
+  Everything should be made as simple as possible,
+  but not any simpler -- Albert Einstein
+  ,#+END_QUOTE
+#+END_EXAMPLE
 
-        Everything should be made as simple as possible,
-        but not any simpler -- Albert Einstein
+    reStructuredText Directives:
+#+BEGIN_SRC rst
+  .. note::
+
+      Everything should be made as simple as possible,
+      but not any simpler -- Albert Einstein
 #+END_SRC
 
-   Org:
-#+BEGIN_SRC org-mode
-#+ATTR_RST: :directive note
-#+BEGIN_QUOTE
-Everything should be made as simple as possible,
-but not any simpler -- Albert Einstein
-#+END_QUOTE
-#+END_SRC
-
-   reStructuredText Directives:
-#+BEGIN_SRC rst-mode
-.. note::
-
-    Everything should be made as simple as possible,
-    but not any simpler -- Albert Einstein
-#+END_SRC
-
-   Org:
-#+BEGIN_SRC org-mode
-#+ATTR_RST: :directive sidebar :title sidebar title
-#+BEGIN_QUOTE
-Everything should be made as simple as possible,
-but not any simpler -- Albert Einstein
-#+END_QUOTE
-#+END_SRC
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+ATTR_RST: :directive sidebar :title sidebar title
+  ,#+BEGIN_QUOTE
+  Everything should be made as simple as possible,
+  but not any simpler -- Albert Einstein
+  ,#+END_QUOTE
+#+END_EXAMPLE
 
    reStructuredText Directives with title:
-#+BEGIN_SRC rst-mode
-.. sidebar:: sidebar title
+#+BEGIN_SRC rst
+  .. sidebar:: sidebar title
 
-    Everything should be made as simple as possible,
-    but not any simpler -- Albert Einstein
+      Everything should be made as simple as possible,
+      but not any simpler -- Albert Einstein
 #+END_SRC
 
 *** Center block
 
     Center block will not affect.
 
-   Org:
-#+BEGIN_SRC org-mode
-#+BEGIN_CENTER
-center block
-#+END_CENTER
-#+END_SRC
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_CENTER
+  center block
+  ,#+END_CENTER
+#+END_EXAMPLE
 
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-center block
+    reStructuredText:
+#+BEGIN_SRC rst
+  center block
 #+END_SRC
 
 ** Literal examples
 
 *** example block
 
-   Org:
-#+BEGIN_SRC org-mode
-#+NAME: label
+    Org:
 #+BEGIN_EXAMPLE
-example
-#+END EXAMPLE
-#+END_SRC
+  ,#+NAME: label
+  ,#+BEGIN_EXAMPLE
+  example
+  ,#+END EXAMPLE
+#+END_EXAMPLE
 
-# maybe github org parser's bug
+    reStructuredText:
+#+BEGIN_SRC rst
+  ::
+      :name: label
 
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-::
-    :name: label
-
-    example
+      example
 #+END_SRC
 
 *** src block
 
-   Org:
-#+BEGIN_SRC org-mode
-#+BEGIN_SRC org-mode
-(require 'ox-rst)
-#+END SRC
-#+END_SRC
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_SRC lisp
+  (require 'ox-rst)
+  ,#+END SRC
+#+END_EXAMPLE
 
-# maybe github org parser's bug
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. code-block:: lisp
 
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-.. code-block:: org-mode
-
-    (require 'ox-rst)
+      (require 'ox-rst)
 #+END_SRC
 
 ** Emphasis and monospace
 
    Org:
-#+BEGIN_SRC org-mode
-*bold* /italic/ _underlined_ =code= ~verbatim~ +strike-through+
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,*bold* /italic/ _underlined_ =code= ~verbatim~ +strike-through+
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-**bold** *italic* underlined ``code`` ``verbatim`` strike-through
+#+BEGIN_SRC rst
+  ,**bold** *italic* underlined ``code`` ``verbatim`` strike-through
 #+END_SRC
 
 ** Horizontal rules
 
    Org:
-#+BEGIN_SRC org-mode
------
-#+END_SRC
+#+BEGIN_EXAMPLE
+  -----
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-------------
+#+BEGIN_SRC rst
+  ------------
 #+END_SRC
 
 
 ** Comment block
 
    Org:
-#+BEGIN_SRC org-mode
-#+BEGIN_COMMENT
-comment
-#+END_COMMENT
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_COMMENT
+  comment
+  ,#+END_COMMENT
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-..
-    comment
+#+BEGIN_SRC rst
+  ..
+      comment
 #+END_SRC
 
 ** Images and Tables
 
 *** Images
 
-   Org:
-#+BEGIN_SRC org-mode
-#+ATTR_RST: :alt alternate text :align right
-[[./image.jpg]]
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+ATTR_RST: :alt alternate text :align right
+  [[./image.jpg]]
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. image:: ./image.jpg
+      :alt: alternate text
+      :align: right
 #+END_SRC
 
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-.. image:: ./image.jpg
-    :alt: alternate text
-    :align: right
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+CAPTION: image caption
+  ,#+NAME: label
+  ,#+ATTR_RST: :alt alternate text :align center :scale 50%
+  [[./image.jpg]]
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. figure:: ./image.jpg
+      :alt: alternate text
+      :align: center
+      :scale: 50%
+
+      image caption
 #+END_SRC
-
-   Org:
-#+BEGIN_SRC org-mode
-#+CAPTION: image caption
-#+NAME: label
-#+ATTR_RST: :alt alternate text :align center :scale 50%
-[[./image.jpg]]
-#+END_SRC
-
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-.. figure:: ./image.jpg
-    :alt: alternate text
-    :align: center
-    :scale: 50%
-
-    image caption
-#+END_SRC
-
 
 *** Tables
 
-   Org:
-#+BEGIN_SRC org-mode
-|------+------+------|
-| TOP1 | TOP2 | TOP3 |
-|------+------+------|
-| 1    | 2    | 3    |
-|------+------+------|
-| AAAA | BBBB | CCCC |
-|------+------+------|
-| END1 | END2 | END3 |
-|------+------+------|
+    Org:
+#+BEGIN_EXAMPLE
+  |------+------+------|
+  | TOP1 | TOP2 | TOP3 |
+  |------+------+------|
+  | 1    | 2    | 3    |
+  |------+------+------|
+  | AAAA | BBBB | CCCC |
+  |------+------+------|
+  | END1 | END2 | END3 |
+  |------+------+------|
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. table::
+
+      +------+------+------+
+      | TOP1 | TOP2 | TOP3 |
+      +------+------+------+
+      | 1    | 2    | 3    |
+      +------+------+------+
+      | AAAA | BBBB | CCCC |
+      +------+------+------+
+      | END1 | END2 | END3 |
+      +------+------+------+
 #+END_SRC
 
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-.. table::
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+CAPTION: caption
+  ,#+NAME: label
+  |------+------+------|
+  | TOP1 | TOP2 | TOP3 |
+  |------+------+------|
+  | 1    | 2    | 3    |
+  |------+------+------|
+  | AAAA | BBBB | CCCC |
+  |------+------+------|
+  | END1 | END2 | END3 |
+  |------+------+------|
+#+END_EXAMPLE
 
-    +------+------+------+
-    | TOP1 | TOP2 | TOP3 |
-    +------+------+------+
-    | 1    | 2    | 3    |
-    +------+------+------+
-    | AAAA | BBBB | CCCC |
-    +------+------+------+
-    | END1 | END2 | END3 |
-    +------+------+------+
-#+END_SRC
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. table:: caption
+      :name: label
 
-   Org:
-#+BEGIN_SRC org-mode
-#+CAPTION: caption
-#+NAME: label
-|------+------+------|
-| TOP1 | TOP2 | TOP3 |
-|------+------+------|
-| 1    | 2    | 3    |
-|------+------+------|
-| AAAA | BBBB | CCCC |
-|------+------+------|
-| END1 | END2 | END3 |
-|------+------+------|
-#+END_SRC
-
-   reStructuredText:
-#+BEGIN_SRC rst-mode
-.. table:: caption
-    :name: label
-
-    +------+------+------+
-    | TOP1 | TOP2 | TOP3 |
-    +------+------+------+
-    | 1    | 2    | 3    |
-    +------+------+------+
-    | AAAA | BBBB | CCCC |
-    +------+------+------+
-    | END1 | END2 | END3 |
-    +------+------+------+
+      +------+------+------+
+      | TOP1 | TOP2 | TOP3 |
+      +------+------+------+
+      | 1    | 2    | 3    |
+      +------+------+------+
+      | AAAA | BBBB | CCCC |
+      +------+------+------+
+      | END1 | END2 | END3 |
+      +------+------+------+
 #+END_SRC
 
 ** Hyperlinks
 
    Org:
-#+BEGIN_SRC org-mode
-[[http://orgmode.org][Org Mode]]
+#+BEGIN_EXAMPLE
+  [[http://orgmode.org][Org Mode]]
 
-[[http://orgmode.org]]
+  [[http://orgmode.org]]
 
-[[label]]
-#+END_SRC
+  [[label]]
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-`Org Mode <http://orgmode.org/>`_
+#+BEGIN_SRC rst
+  `Org Mode <http://orgmode.org/>`_
 
-`http://orgmode.org`_
+  `http://orgmode.org`_
 
-`label`_
+  `label`_
 #+END_SRC
 
 ** Export reStructuredText fragments
 
    Org:
-#+BEGIN_SRC org-mode
-#+RST: .. class:: alert
-#+END_SRC
+#+BEGIN_EXAMPLE
+  ,#+RST: .. class:: alert
+#+END_EXAMPLE
 
    reStructuredText:
-#+BEGIN_SRC rst-mode
-.. class:: alert
+#+BEGIN_SRC rst
+  .. class:: alert
 #+END_SRC
