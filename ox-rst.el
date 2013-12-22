@@ -1329,8 +1329,8 @@ contextual information."
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
   (if (org-element-property :use-brackets-p superscript)
-      (format "_{%s}" contents)
-    (format "_%s" contents)))
+      (format "^{%s}" contents)
+    (format "^%s" contents)))
 
 
 ;;;; Table
