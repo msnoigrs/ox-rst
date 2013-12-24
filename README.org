@@ -388,7 +388,6 @@
     Org:
 #+BEGIN_EXAMPLE
   ,#+CAPTION: image caption
-  ,#+NAME: label
   ,#+ATTR_RST: :alt alternate text :align center :scale 50%
   [[./image.jpg]]
 #+END_EXAMPLE
