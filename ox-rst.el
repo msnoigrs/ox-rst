@@ -1317,9 +1317,7 @@ holding contextual information."
   "Transcode a SUBSCRIPT object from Org to reStructuredText.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (if (org-element-property :use-brackets-p subscript)
-      (format "_{%s}" contents)
-    (format "_%s" contents)))
+  (format "\\ :sub:`%s`\\ " contents))
 
 
 ;;;; Superscript
@@ -1328,9 +1326,7 @@ contextual information."
   "Transcode a SUPERSCRIPT object from Org to reStructuredText.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
-  (if (org-element-property :use-brackets-p superscript)
-      (format "_{%s}" contents)
-    (format "_%s" contents)))
+  (format "\\ :sup:`%s`\\ " contents))
 
 
 ;;;; Table

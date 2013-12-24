@@ -340,6 +340,20 @@
   ,**bold** *italic* underlined ``code`` ``verbatim`` strike-through
 #+END_SRC
 
+** Subscript and superscript
+
+   Org:
+#+BEGIN_EXAMPLE
+  H_{2}O
+  E = mc^2
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  H\ :sub:`2`\ O
+  E = mc\ :sup:`2`\ 
+#+END_SRC
+
 ** Horizontal rules
 
    Org:
