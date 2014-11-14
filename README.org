@@ -197,7 +197,6 @@
   |      Snow covers Emacs
   |
   |          -- AlexSchroeder
-  |
 #+END_SRC
 
 *** Quote block

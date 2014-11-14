@@ -1449,7 +1449,10 @@ channel."
   "Transcode a VERSE-BLOCK element from Org to reStructuredText.
 CONTENTS is verse block contents.  INFO is a plist holding
 contextual information."
-  (replace-regexp-in-string "^" "| " contents))
+  (concat
+   (replace-regexp-in-string "^" "| " (if (> (length contents) 1)
+                                          (substring contents 0 -1)
+                                        contents)) "\n"))
 
 
 
