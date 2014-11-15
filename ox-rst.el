@@ -440,8 +440,14 @@ is a plist used as a communication channel."
 		   ;; Update SEEN links along the way.
 		   (lambda (link)
 			 (let ((footprint
+                    ;; Normalize description in footprints.
 					(cons (org-element-property :raw-link link)
-						  (org-element-contents link))))
+                          (let ((contents (org-element-contents link)))
+                            (and contents
+                                 (replace-regexp-in-string
+                                  "[ \r\t\n]+" " "
+                                  (org-trim
+                                   (org-element-interpret-data contents))))))))
 			   ;; Ignore LINK if it hasn't been translated already.
 			   ;; It can happen if it is located in an affiliated
 			   ;; keyword that was ignored.
