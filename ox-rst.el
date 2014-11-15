@@ -53,7 +53,6 @@
     (planning . org-rst-planning)
     (property-drawer . org-rst-property-drawer)
     (quote-block . org-rst-quote-block)
-    (quote-section . org-rst-quote-section)
     (radio-target . org-rst-radio-target)
     (section . org-rst-section)
     (special-block . org-rst-special-block)
@@ -1220,14 +1219,6 @@ holding contextual information."
 			"\n"
 			(when contents
 			  (org-rst--indent-string contents org-rst-quote-margin)))))))
-
-
-;;;; Quote Section
-
-(defun org-rst-quote-section (quote-section contents info)
-  "Transcode a QUOTE-SECTION element from Org to reStructuredText.
-CONTENTS is nil.  INFO is a plist holding contextual information."
-  (org-remove-indentation (org-element-property :value quote-section)))
 
 
 ;;;; Radio Target
