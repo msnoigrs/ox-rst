@@ -350,7 +350,7 @@ possible.  It doesn't apply to `inlinetask' elements."
      ;; Align tags, if any.
      (when tags
        (format
-		(format " %%%ds" (length tags))
+		(format " %%%ds" (string-width tags))
 		tags))
      ;; Maybe underline text, if ELEMENT type is `headline' and an
      ;; underline character has been defined.
@@ -360,7 +360,7 @@ possible.  It doesn't apply to `inlinetask' elements."
 				   '(?- ?~ ?^ ?: ?' ?\ ?_))))
 		 (and under-char
 			  (concat "\n"
-					  (make-string (* (length first-part) 2) under-char))))))))
+					  (make-string (string-width first-part) under-char))))))))
 
 
 (defun org-rst--text-markup (text markup)
@@ -509,7 +509,7 @@ INFO is a plist used as a communication channel."
 				(concat author email))
 			   ((org-string-nw-p author) author)
 			   ((org-string-nw-p email) email)) title))
-		  (titleline (make-string (* (length title) 2) ?=)))
+		  (titleline (make-string (string-width title) ?=)))
 	(concat
 	 title "\n"
 	 titleline "\n"
@@ -872,7 +872,7 @@ a communication channel."
 			   (replace-regexp-in-string "[0-9]+" num bul)))
 			(tag "")
 			(t "-"))))
-		 (width (if tag 4 (length bullet)))
+		 (width (if tag 4 (string-width bullet)))
 		 )
     (concat
      (if tag tag (concat bullet checkbox))
@@ -1367,7 +1367,8 @@ CONTENTS is the cell contents.  INFO is a plist used as
 a communication channel."
   (let ((width (org-ascii--table-cell-width table-cell info)))
     ;; When contents are too large, truncate them.
-    (unless (or org-ascii-table-widen-columns (<= (length contents) width))
+    (unless (or org-ascii-table-widen-columns
+                (<= (string-width contents) width))
       (setq contents (concat (substring contents 0 (- width 2)) "=>")))
     ;; Align contents correctly within the cell.
     (let* ((indent-tabs-mode nil)
@@ -1376,7 +1377,8 @@ a communication channel."
 	      (org-ascii--justify-string
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)))))
-      (setq contents (concat data (make-string (- width (length data)) ? ))))
+      (setq contents (concat data
+                             (make-string (- width (string-width data)) ? ))))
     ;; Return cell.
     (concat (format " %s " contents)
 			(when (org-export-get-next-element table-cell info) "|"))))
@@ -1450,7 +1452,7 @@ channel."
 CONTENTS is verse block contents.  INFO is a plist holding
 contextual information."
   (concat
-   (replace-regexp-in-string "^" "| " (if (> (length contents) 1)
+   (replace-regexp-in-string "^" "| " (if (> (string-width contents) 1)
                                           (substring contents 0 -1)
                                         contents)) "\n"))
 
