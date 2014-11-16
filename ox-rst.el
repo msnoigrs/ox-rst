@@ -78,6 +78,9 @@
   :options-alist
     '((:rst-link-org-as-html nil nil org-rst-link-org-files-as-html)
 	  (:rst-link-use-abs-url nil "rst-link-use-abs-url" org-rst-link-use-abs-url)
+      (:rst-inline-images nil nil org-rst-inline-images)
+      (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
+      (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
 	  (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home))
   :filters-alist '((:filter-headline . org-rst-filter-headline-blank-lines)
 				   (:filter-parse-tree org-rst-separate-elements
@@ -121,6 +124,14 @@ When nil, the links still point to the plain `.org' file."
   :group 'org-export-rst
   :type 'boolean)
 
+;;;; Links :: Inline images
+
+(defcustom org-rst-inline-images t
+  "Non-nil means inline images into exported reStructuredText.
+This is done using an image directive or an figure directive.
+When nil, an anchor with reference is used to link to the image."
+  :group 'org-export-rst
+  :type 'boolean)
 
 (defcustom org-rst-inline-image-rules
   '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\)\\'")
@@ -938,7 +949,8 @@ inline image when it has no description and targets an image
 file (see `org-rst-inline-image-rules' for more information), or
 if its description is a single link targeting an image file."
   (if (not (org-element-contents link))
-      (org-export-inline-image-p link org-rst-inline-image-rules)
+      (org-export-inline-image-p
+       link (plist-get info :rst-inline-image-rules))
     (not
      (let ((link-count 0))
        (org-element-map (org-element-contents link)
@@ -949,7 +961,7 @@ if its description is a single link targeting an image file."
 			 (link (if (= link-count 1) t
 					 (incf link-count)
 					 (not (org-export-inline-image-p
-						   obj org-rst-inline-image-rules))))
+						   obj (plist-get info :rst-inline-image-rules)))))
 			 (otherwise t)))
          info t)))))
 
@@ -968,7 +980,7 @@ INFO is a plist holding contextual information."
 			 "Treat links to `file.org' as links to `file.html', if needed.
            See `org-rst-link-org-files-as-html'."
 			 (cond
-			  ((and org-rst-link-org-files-as-html
+			  ((and (plist-get info :rst-link-org-files-as-html)
 					(string= ".org"
 							 (downcase (file-name-extension raw-path "."))))
 			   (concat (file-name-sans-extension raw-path) "."
@@ -1018,7 +1030,9 @@ INFO is a plist holding contextual information."
 		 protocol)
     (cond
      ;; Image file.
-     ((org-export-inline-image-p link org-rst-inline-image-rules)
+     ((and (plist-get info :rst-inline-images)
+           (org-export-inline-image-p
+            link (plist-get info :rst-inline-image-rules)))
 	  (let ((ipath (if (not (file-name-absolute-p raw-path)) raw-path
 					 (expand-file-name raw-path)))
 			(caption (org-export-get-caption
