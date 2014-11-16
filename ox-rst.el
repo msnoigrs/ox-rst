@@ -1000,15 +1000,7 @@ INFO is a plist holding contextual information."
 				 ;; Treat links to ".org" files as ".html", if needed.
 				 (setq raw-path
 					   (funcall link-org-files-as-html-maybe raw-path info))
-				 ;; If file path is absolute, prepend it with protocol
-				 ;; component - "file://".
-				 (cond ((file-name-absolute-p raw-path)
-						(setq raw-path
-							  (concat "file://" (expand-file-name
-												 (replace-regexp-in-string
-												  "^/+" "/"
-												 raw-path)))))
-					   ((and home use-abs-url)
+				 (cond ((and home use-abs-url)
 						(setq raw-path
 							  (concat (file-name-as-directory home) raw-path)))))
 				(t raw-path)))
