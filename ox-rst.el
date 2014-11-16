@@ -1038,9 +1038,9 @@ INFO is a plist holding contextual information."
 					 (expand-file-name raw-path)))
 			(caption (org-export-get-caption
 					  (org-export-get-parent-element link))))
-		(if caption (format ".. figure:: %s%s\n    %s" ipath attributes
+		(if caption (format ".. figure:: %s%s\n    %s\n" ipath attributes
 							(org-export-data caption info))
-		  (format ".. image:: %s%s" ipath	attributes))))
+		  (format ".. image:: %s%s\n" ipath	attributes))))
      ;; Radio link: Transcode target's contents and use them as link's
      ;; description.
      ((string= type "radio")
