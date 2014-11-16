@@ -134,10 +134,11 @@ When nil, an anchor with reference is used to link to the image."
   :type 'boolean)
 
 (defcustom org-rst-inline-image-rules
-  '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\)\\'")
-    ("http" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\)\\'")
-    ("https" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\)\\'"))
-  "Rules characterizing image files that can be inlined into HTML.
+  '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("fuzzy" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("http" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("https" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'"))
+  "Rules characterizing image files that can be inlined into reStructuredText.
 A rule consists in an association whose key is the type of link
 to consider, and value is a regexp that will be matched against
 link's path."
