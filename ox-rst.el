@@ -967,19 +967,6 @@ if its description is a single link targeting an image file."
          info t)))))
 
 
-(defun my-org-export-inline-image-p (link &optional rules)
-  (let ((case-fold-search t)
-        (rules (or rules org-export-default-inline-image-rule)))
-    (catch 'exit
-      (mapc
-       (lambda (rule)
-         (if (string-match (cdr rule) link)
-              (throw 'exit t)))
-       rules)
-      ;; Return nil if no rule matched.
-      nil)))
-
-
 (defun org-rst-link (link desc info)
   "Transcode a LINK object from Org to reStructuredText.
 
@@ -1046,11 +1033,6 @@ INFO is a plist holding contextual information."
 		(if caption (format ".. figure:: %s%s\n    %s\n" ipath attributes
 							(org-export-data caption info))
 		  (format ".. image:: %s%s\n" ipath	attributes))))
-     ((and (plist-get info :rst-inline-images)
-           path
-           (my-org-export-inline-image-p
-            desc (plist-get info :rst-inline-image-rules)))
-      (format ".. image:: %s\n    :target: %s%s" desc path attributes))
      ;; Radio link: Transcode target's contents and use them as link's
      ;; description.
      ((string= type "radio")
