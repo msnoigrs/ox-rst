@@ -1232,15 +1232,7 @@ holding contextual information."
 								(org-export-solidify-link-text label)))
 			"\n"
 			(when contents
-			  (if (string= "math" directive)
-				  (let* ((rcontents
-						  (replace-regexp-in-string
-						   "\\\\ :sub:`\\(.+\\)`\\\\ " "_{\\1}" contents))
-						 (rcontents
-						  (replace-regexp-in-string
-						   "\\\\ :sup:`\\(.+\\)`\\\\ " "^{\\1}" rcontents)))
-					(org-rst--indent-string rcontents org-rst-quote-margin))
-				(org-rst--indent-string contents org-rst-quote-margin)))))
+			  (org-rst--indent-string contents org-rst-quote-margin))))
 		  (t
 		   (concat
 			(format "::\n")
