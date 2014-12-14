@@ -353,6 +353,32 @@
   E = mc\ :sup:`2`\ 
 #+END_SRC
 
+** LaTeX fragments
+
+   Org:
+#+BEGIN_EXAMPLE
+   If $a^2=b$ and \( b=2 \), then the solution must be
+   either $$ a=+\sqrt{2} $$ or \[ a=-\sqrt{2} \].
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  If :math:`a^2=b` and :math:`b=2`, then the solution must be
+either 
+
+.. math::
+
+    a=+\sqrt{2}
+
+ or 
+
+.. math::
+
+    a=-\sqrt{2}
+
+.
+#+END_SRC
+
 ** Horizontal rules
 
    Org:
