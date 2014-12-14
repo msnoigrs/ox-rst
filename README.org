@@ -82,17 +82,17 @@
    reStructuredText:
 #+BEGIN_SRC rst
   Heading 1
-  ------------------
+  ---------
 
   contents 1
 
   Heading 1-1
-  ~~~~~~~~~~~~~~~~~~~~~~
+  ~~~~~~~~~~~
 
   contents 1-1
 
   Heading 1-1-3
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ^^^^^^^^^^^^^
 
   contents 1-1-3
 #+END_SRC
