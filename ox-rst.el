@@ -1,10 +1,10 @@
 ;;; ox-rst.el --- Export reStructuredText using org-mode.
 
-;; Copyright (C) 2013  IGARASHI Masanao
+;; Copyright (C) 2014  IGARASHI Masanao
 
 ;; Author: IGARASHI Masanao <syoux2@gmail.com>
 ;; Keywords: org, rst, reST, reStructuredText
-;; Version: 0.1
+;; Version: 0.2
 
 ;;; Commentary:
 ;; This library implements an reStructuredText back-end for
@@ -69,7 +69,9 @@
     (timestamp . org-rst-timestamp)
     (underline . org-rst-underline)
     (verbatim . org-rst-verbatim)
-    (verse-block . org-rst-verse-block))
+    (verse-block . org-rst-verse-block)
+    ;; Pseudo objects and elements.
+    (latex-math-block . org-rst-math-block))
   :export-block '("RST" "REST" "RESTRUCTUREDTEXT")
   :menu-entry
   '(?r "Export to reStructuredText"
@@ -82,8 +84,10 @@
       (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
       (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
 	  (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home))
-  :filters-alist '((:filter-headline . org-rst-filter-headline-blank-lines)
-				   (:filter-parse-tree org-rst-separate-elements
+  :filters-alist '((:filter-options . org-rst-math-block-options-filter)
+                   (:filter-headline . org-rst-filter-headline-blank-lines)
+				   (:filter-parse-tree org-rst-math-block-tree-filter
+                                       org-rst-separate-elements
 									   org-rst-filter-paragraph-spacing)
 				   (:filter-section . org-rst-filter-headline-blank-lines)))
 
@@ -656,7 +660,10 @@ holding contextual information."
   "Transcode an ENTITY object from Org to reStructuredText.
 CONTENTS are the definition itself.  INFO is a plist holding
 contextual information."
-  (org-element-property :utf-8 entity))
+  (let ((ent (org-element-property :latex entity)))
+    (if (org-element-property :latex-math-p entity)
+        (format ":math:`%s`" ent)
+      (org-element-property :utf-8 entity))))
 
 
 ;;;; Example Block
@@ -928,8 +935,21 @@ information."
   "Transcode a LATEX-FRAGMENT object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  (when (plist-get info :with-latex)
-    (org-element-property :value latex-fragment)))
+  (let ((value (org-element-property :value latex-fragment)))
+    (cond
+     ((string-match "\\`\\(\\$\\{2\\}\\)\\([^\000]*\\)\\1\\'" value)
+      (format ".. math::\n\n%s"
+              (org-rst--indent-string
+               (org-trim (match-string 2 value)) org-rst-quote-margin)))
+     ((string-match "\\`\\(\\$\\{1\\}\\)\\([^\000]*\\)\\1\\'" value)
+      (format ":math:`%s`" (org-trim (match-string 2 value))))
+     ((string-match "\\`\\\\(\\([^\000]*\\)\\\\)\\'" value)
+      (format ":math:`%s`" (org-trim (match-string 1 value))))
+     ((string-match "\\`\\\\\\[\\([^\000]*\\)\\\\\\]\\'" value)
+      (format "\.. math::\n\n%s"
+              (org-rst--indent-string
+               (org-trim (match-string 1 value)) org-rst-quote-margin)))
+     (t value))))
 
 
 ;;;; Line Break
@@ -1201,6 +1221,82 @@ holding contextual information."
 	(concat
 	 "::\n\n"
 	 (org-rst--indent-string contents org-rst-quote-margin))))
+
+
+;;;; Pseudo Object: LaTeX Math Block
+
+;; `latex-math-block' objects have the following property:
+;; `:post-blank'.
+
+(defun org-rst--wrap-latex-math-block (data info)
+  "Merge contiguous math objects in a pseudo-object container.
+DATA is a parse tree or a secondary string.  INFO is a plist
+containing export options.  Modify DATA by side-effect and return it."
+  (let ((valid-object-p
+         (function
+          ;; Non-nil when OBJ can be added to the latex math block.
+          (lambda (obj)
+            (case (org-element-type obj)
+              (entity (org-element-property :latex-math-p obj))
+              (latex-fragment
+               (let ((value (org-element-property :value obj)))
+                 (or (org-string-match-p "\\`\\\\([^\000]*\\\\)\\'" value)
+                     (org-string-match-p "\\`\\$[^\000]*\\$\\'" value)
+                     (org-string-match-p "\\`\\\\\\[[^\000]*\\\\\\]\\'" value))))
+              ((subscript superscript) t))))))
+    (org-element-map data '(entity latex-fragment subscript superscript)
+      (lambda (object)
+        ;; Skip objects already wrapped.
+        (when (and (not (eq (org-element-type
+                             (org-element-property :parent object))
+                            'latex-math-block))
+                   (funcall valid-object-p object))
+          (let ((math-block (list 'latex-math-block nil))
+                (next-elements (org-export-get-next-element object info t))
+                (last object))
+            ;; Wrap MATH-BLOCK around OBJECT in DATA.
+            (org-element-insert-before math-block object)
+            (org-element-extract-element object)
+            (org-element-adopt-elements math-block object)
+            (when (zerop (or (org-element-property :post-blank object) 0))
+              ;; MATH-BLOCK swallows consecutive math objects.
+              (catch 'exit
+                (dolist (next next-elements)
+                  (if (not (funcall valid-object-p next)) (throw 'exit nil)
+                    (org-element-extract-element next)
+                    (org-element-adopt-elements math-block next)
+                    ;; Eschew the case: \beta$x$ -> \(\betax\).
+                    (unless (memq (org-element-type next)
+                                  '(subscript superscript))
+                      (org-element-put-property last :post-blank 1))
+                    (setq last next)
+                    (when (> (or (org-element-property :post-blank next) 0) 0)
+                      (throw 'exit nil))))))
+            (org-element-put-property
+             math-block :post-blank (org-element-property :post-blank last)))))
+      info nil '(subscript superscript latex-math-block) t)
+    ;; Return updated DATA.
+    data))
+
+(defun org-rst-math-block-tree-filter (tree backend info)
+  (org-rst--wrap-latex-math-block tree info))
+
+(defun org-rst-math-block-options-filter (info backend)
+  (dolist (prop '(:author :date :title) info)
+    (plist-put info prop
+	       (org-rst--wrap-latex-math-block (plist-get info prop) info))))
+
+(defun org-rst-math-block (math-block contents info)
+  "Transcode a MATH-BLOCK object from Org to LaTeX.
+CONTENTS is a string.  INFO is a plist used as a communication
+channel."
+  (let* ((value (org-trim contents))
+         (value
+          (if (> (string-width value) 2)
+              (if (string= ".." (substring value 0 2))
+                  (format "\n\n%s\n\n" value)
+                value))))
+    (format "%s" value)))
 
 
 ;;;; Quote Block
