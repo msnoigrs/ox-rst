@@ -1522,18 +1522,6 @@ See `org-rst-paragraph-spacing' for information."
 		   p :post-blank org-rst-paragraph-spacing)))))
   tree)
 
-(defun org-rst-filter-comment-spacing (tree backend info)
-  "Filter removing blank lines between comments.
-TREE is the parse tree.  BACK-END is the symbol specifying
-back-end used for export.  INFO is a plist used as
-a communication channel."
-  (org-element-map tree '(comment comment-block)
-    (lambda (c)
-      (when (memq (org-element-type (org-export-get-next-element c info))
-				  '(comment comment-block))
-		(org-element-put-property c :post-blank 0))))
-  tree)
-
 
 
 ;;; End-user functions
