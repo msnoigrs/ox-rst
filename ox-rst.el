@@ -1079,7 +1079,7 @@ INFO is a plist holding contextual information."
 					 (expand-file-name raw-path)))
 			(caption (org-export-get-caption
 					  (org-export-get-parent-element link))))
-		(if caption (format ".. figure:: %s%s\n    %s\n" ipath attributes
+		(if caption (format ".. figure:: %s%s\n \n   %s\n" ipath attributes
 							(org-export-data caption info))
 		  (format ".. image:: %s%s\n" ipath	attributes))))
      ((and (plist-get info :rst-inline-images)
@@ -1500,7 +1500,7 @@ a communication channel."
     (let* ((indent-tabs-mode nil)
 	   (data
 	    (when contents
-	      (org-ascii--justify-string
+	      (org-ascii--justify-lines
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)))))
       (setq contents (concat data
