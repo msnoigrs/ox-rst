@@ -1068,9 +1068,10 @@ INFO is a plist holding contextual information."
 				 (org-export-read-attribute :attr_rst parent))))
 		 (attributes
 		  (let ((attr (org-rst--make-attribute-string attributes-plist)))
-			(if (org-string-nw-p attr) (concat "\n" attr "\n") "")))
-		 protocol)
+			(if (org-string-nw-p attr) (concat "\n" attr "\n") ""))))
     (cond
+     ;; Link type is handled by a special function.
+     ((org-export-custom-protocol-maybe link desc info))
      ;; Image file.
      ((and (plist-get info :rst-inline-images)
            (org-export-inline-image-p
