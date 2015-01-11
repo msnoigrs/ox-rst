@@ -1500,7 +1500,7 @@ a communication channel."
     (let* ((indent-tabs-mode nil)
 	   (data
 	    (when contents
-	      (org-ascii--justify-string
+	      (org-ascii--justify-lines
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)))))
       (setq contents (concat data
