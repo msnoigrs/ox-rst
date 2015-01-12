@@ -1466,6 +1466,18 @@ contextual information."
 
 ;;;; Table
 
+(defun org-rst-table-first-row-data-cells (table info)
+  "Transcode the first row of TABLE.
+INFO is a plist used as a communication channel."
+  (let ((table-row
+         (org-element-map table 'table-row
+           (lambda (row)
+             (unless (eq (org-element-property :type row) 'rule) row))
+           info 'first-match))
+        (special-column-p (org-export-table-has-special-column-p table)))
+    (if (not special-column-p) (org-element-contents table-row)
+      (cdr (org-element-contents table-row)))))
+
 (defun org-rst-table (table contents info)
   "Transcode a TABLE element from Org to reStructuredText.
 CONTENTS is the contents of the table.  INFO is a plist holding
@@ -1487,23 +1499,18 @@ contextual information."
 
 ;;;; Table Cell
 
-
 (defun org-rst-table-cell (table-cell contents info)
   "Transcode a TABLE-CELL object from Org to reStructuredText.
 CONTENTS is the cell contents.  INFO is a plist used as
 a communication channel."
   (let ((width (org-ascii--table-cell-width table-cell info)))
-    ;; When contents are too large, truncate them.
-    (unless (or org-ascii-table-widen-columns
-                (<= (string-width contents) width))
-      (setq contents (concat (substring contents 0 (- width 2)) "=>")))
     ;; Align contents correctly within the cell.
     (let* ((indent-tabs-mode nil)
 	   (data
-	    (when contents
+	    (if contents
 	      (org-ascii--justify-lines
 	       contents width
-	       (org-export-table-cell-alignment table-cell info)))))
+	       (org-export-table-cell-alignment table-cell info)) "\\")))
       (setq contents (concat data
                              (make-string (- width (string-width data)) ? ))))
     ;; Return cell.
@@ -1518,21 +1525,46 @@ a communication channel."
 CONTENTS is the row contents.  INFO is a plist used as
 a communication channel."
   (let ((borders (org-export-table-cell-borders
-				  (org-element-map table-row 'table-cell 'identity info t)
-				  info)))
-	(if (not (and (memq 'bottom borders) (memq 'top borders)))
-	  (let ((hline
-			 (replace-regexp-in-string "|" "+"
-									   (replace-regexp-in-string
-										"[^|]" "-" contents))))
-		(concat
-		(when (and (memq 'top borders) (memq 'above borders))
-		  (concat "+" hline "+\n"))
-		"|" contents "|"
-		(when (memq 'below borders)
-		  (concat "\n+" hline "+"))))
-	  nil
-	  )))
+                  (org-element-map table-row 'table-cell 'identity info t)
+                  info)))
+    (if (not (and (memq 'bottom borders) (memq 'top borders)))
+        (let* ((rowgroup-number (org-export-table-row-group table-row info))
+               (row-number (org-export-table-row-number table-row info))
+               (line-bit
+                (cond
+                 ((not (= 1 rowgroup-number))
+                  ?-)
+                 ((org-export-table-has-header-p
+                   (org-export-get-parent-table table-row) info)
+                  ?=)
+                 (t ?-)))
+               (makeline
+                (function
+                 (lambda (rowcontents linebit)
+                   (format "+%s+"
+                           (mapconcat
+                            'identity
+                            (mapcar
+                             (lambda (table-cell)
+                               (make-string (string-width table-cell)
+                                            linebit))
+                             (split-string contents "|"))
+                               "+")))))
+               (hline (format "+%s+"
+                              (mapconcat
+                               'identity
+                               (mapcar
+                                (lambda (table-cell)
+                                  (make-string (string-width table-cell)
+                                               line-bit))
+                                (split-string contents "|"))
+                               "+"))))
+          (concat
+           (when (= 0 row-number)
+             (concat (funcall makeline contents ?-) "\n"))
+           "|" contents "|\n" hline))
+      nil
+      )))
 
 
 ;;;; Target
