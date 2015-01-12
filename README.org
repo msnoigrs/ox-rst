@@ -518,7 +518,7 @@ either
       +------+------+------+
 #+END_SRC
 
-    Org:
+   Org:
 #+BEGIN_EXAMPLE
   ,#+CAPTION: caption
   ,#+NAME: label
@@ -547,13 +547,13 @@ either
 
 ** Hyperlinks
 
+*** External hyperlinks
+
    Org:
 #+BEGIN_EXAMPLE
   [[http://orgmode.org][Org Mode]]
 
   [[http://orgmode.org]]
-
-  [[label]]
 #+END_EXAMPLE
 
    reStructuredText:
@@ -561,8 +561,27 @@ either
   `Org Mode <http://orgmode.org/>`_
 
   `http://orgmode.org`_
+#+END_SRC
 
-  `label`_
+*** Internal links
+
+   Org:
+#+BEGIN_EXAMPLE
+  Internal crossreferences, like [[example]]
+
+  <<example>>
+  This is an example crossreference target.
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+Internal crossreferences, like `example`_
+
+
+.. _example:
+
+
+This is an example crossreference target.
 #+END_SRC
 
 ** Export reStructuredText fragments
