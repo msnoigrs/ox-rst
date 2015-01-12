@@ -1573,7 +1573,7 @@ a communication channel."
   "Transcode a TARGET object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  (format "`%s`"
+  (format "\n.. _%s:\n\n"
 	  (org-export-solidify-link-text (org-element-property :value target))))
 
 
