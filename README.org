@@ -445,6 +445,53 @@ either
 
     Org:
 #+BEGIN_EXAMPLE
+  | TOP1 | TOP2 | TOP3 |
+  | 1    | 2    | 3    |
+  | AAAA | BBBB | CCCC |
+  | END1 | END2 | END3 |
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. table::
+
+      +------+------+------+
+      | TOP1 | TOP2 | TOP3 |
+      +------+------+------+
+      | 1    | 2    | 3    |
+      +------+------+------+
+      | AAAA | BBBB | CCCC |
+      +------+------+------+
+      | END1 | END2 | END3 |
+      +------+------+------+
+#+END_SRC
+
+    Org:
+#+BEGIN_EXAMPLE
+  | TOP1 | TOP2 | TOP3 |
+  |------+------+------|
+  | 1    | 2    | 3    |
+  | AAAA | BBBB | CCCC |
+  | END1 | END2 | END3 |
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. table::
+
+      +------+------+------+
+      | TOP1 | TOP2 | TOP3 |
+      +======+======+======+
+      | 1    | 2    | 3    |
+      +------+------+------+
+      | AAAA | BBBB | CCCC |
+      +------+------+------+
+      | END1 | END2 | END3 |
+      +------+------+------+
+#+END_SRC
+
+    Org:
+#+BEGIN_EXAMPLE
   |------+------+------|
   | TOP1 | TOP2 | TOP3 |
   |------+------+------|
@@ -475,15 +522,11 @@ either
 #+BEGIN_EXAMPLE
   ,#+CAPTION: caption
   ,#+NAME: label
-  |------+------+------|
   | TOP1 | TOP2 | TOP3 |
   |------+------+------|
   | 1    | 2    | 3    |
-  |------+------+------|
   | AAAA | BBBB | CCCC |
-  |------+------+------|
   | END1 | END2 | END3 |
-  |------+------+------|
 #+END_EXAMPLE
 
     reStructuredText:
@@ -493,7 +536,7 @@ either
 
       +------+------+------+
       | TOP1 | TOP2 | TOP3 |
-      +------+------+------+
+      +======+======+======+
       | 1    | 2    | 3    |
       +------+------+------+
       | AAAA | BBBB | CCCC |
