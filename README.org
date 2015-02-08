@@ -12,7 +12,7 @@
 * Ox-Rst
 
   *Ox-Rst* exports your [[http://orgmode.org][Org]] documents to reStructuredText.
-  Ox-Rst relies on the Org-mode 8.0 export framework.
+  Ox-Rst relies on the Org-mode 8.3 export framework.
 
 * Configuration
 
