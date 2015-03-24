@@ -563,20 +563,18 @@ INFO is a plist used as a communication channel."
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
-   ;; 1. Build title block.
+   ;; Build title block.
    (concat (org-rst-template--document-title info)
 		   ;; 2. Table of contents.
 		   (let ((depth (plist-get info :with-toc)))
 			 (when depth "\n.. contents::\n")))
-   ;; 3. Document's body.
+   ;; Document's body.
    contents
-   ;; 4. Creator.  Ignore `comment' value as there are no comments in
-   ;;    ASCII.  Justify it to the bottom right.
-   (let ((creator-info (plist-get info :with-creator)))
-	 (unless (or (not creator-info) (eq creator-info 'comment))
-	   (concat
-		"\n    :Creator: "
-		(plist-get info :creator))))))
+   ;; Creator.  Justify it to the bottom right.
+   (and (plist-get info :with-creater)
+        (concat
+         "\n    :Creator: "
+         (plist-get info :creator) "\n"))))
 
 
 
