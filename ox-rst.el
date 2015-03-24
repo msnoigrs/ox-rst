@@ -843,8 +843,7 @@ holding export options."
 	;; 1. Document's body.
 	contents
 	;; 2. Footnote definitions.
-	(let ((definitions (org-export-collect-footnote-definitions
-						(plist-get info :parse-tree) info))
+	(let ((definitions (org-export-collect-footnote-definitions info))
 		  ;; Insert full links right inside the footnote definition
 		  ;; as they have no chance to be inserted later.
 		  (org-rst-links-to-notes nil))
