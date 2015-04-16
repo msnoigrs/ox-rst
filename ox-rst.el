@@ -1050,7 +1050,8 @@ INFO is a plist holding contextual information."
 					   (funcall link-org-files-as-html-maybe raw-path info))
 				 (cond ((and home use-abs-url)
 						(setq raw-path
-							  (concat (file-name-as-directory home) raw-path)))))
+							  (concat (file-name-as-directory home) raw-path)))
+                       (t raw-path)))
 				(t raw-path)))
 		 ;; Extract attributes from parent's paragraph.  HACK: Only do
 		 ;; this for the first link in parent (inner image link for
@@ -1144,9 +1145,10 @@ INFO is a plist holding contextual information."
      ;; External link with a description part.
      ((and path desc) (format "`%s <%s>`_" desc path))
      ;; External link without a description part.
-     (path (format "`%s`_" path))
+     (path (format "`%s <%s>`_"
+                   (replace-regexp-in-string "^//" "" path) path))
      ;; No path, only description.  Try to do something useful.
-     (t (format "`%s`_" desc)))))
+     (t (format "`%s <%s>`_" desc desc)))))
 
 
 ;;;; Node Property
