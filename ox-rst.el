@@ -698,8 +698,7 @@ information."
 	  (concat
 	   "::\n"
 	   (when class (format "    :class: %s\n" class))
-	   (when label (format "    :name: %s\n"
-						   (org-export-solidify-link-text label)))
+	   (when label (format "    :name: %s\n" label))
 	   "\n"
 	   (org-rst--indent-string example org-rst-quote-margin)))))
 
@@ -1094,7 +1093,7 @@ INFO is a plist holding contextual information."
       (let ((destination (org-export-resolve-radio-link link info)))
 		(when destination
 			(format "`%s <%s>`_"
-					(org-export-solidify-link-text path)
+					path
 					(org-export-data (org-element-contents destination) info)))))
      ;; Links pointing to a headline: Find destination and build
      ;; appropriate referencing command.
@@ -1131,9 +1130,8 @@ INFO is a plist holding contextual information."
 							(org-element-property :title destination) info))))))
           ;; Fuzzy link points to a target.  Do as above.
 		  (otherwise
-		   (let ((path (org-export-solidify-link-text path)))
-			 (if (not desc) (format "`%s`_" path)
-			   (format "`%s <%s>`_" desc path)))))))
+           (if (not desc) (format "`%s`_" path)
+             (format "`%s <%s>`_" desc path))))))
      ;; Coderef: replace link with the reference name or the
      ;; equivalent line number.
      ((string= type "coderef")
@@ -1342,8 +1340,7 @@ holding contextual information."
 			  (format "    :subtitle: %s\n" subtitle))
 			(when (and class (not (string= "container" directive)))
 			  (format "    :class: %s\n" class))
-			(when label (format "    :name: %s\n"
-								(org-export-solidify-link-text label)))
+			(when label (format "    :name: %s\n" label))
 			"\n"
 			(when contents
 			  (org-rst--indent-string contents org-rst-quote-margin))))
@@ -1351,8 +1348,7 @@ holding contextual information."
 		   (concat
 			(format "::\n")
 			(when class (format "    :class: %s\n" class))
-			(when label (format "    :name: %s\n"
-								(org-export-solidify-link-text label)))
+			(when label (format "    :name: %s\n" label))
 			"\n"
 			(when contents
 			  (org-rst--indent-string contents org-rst-quote-margin)))))))
@@ -1411,8 +1407,7 @@ contextual information."
 		  (concat
 		   "::\n"
 		   (when class (format "    :class: %s\n" class))
-		   (when label (format "    :name: %s\n"
-							   (org-export-solidify-link-text label)))
+		   (when label (format "    :name: %s\n" label))
 		   "\n"
 		   (org-rst--indent-string value org-rst-quote-margin))))
 	   ;; Case 2. pygments.
@@ -1423,8 +1418,7 @@ contextual information."
 		   (format ".. code-block:: %s\n" lst-lang)
 		   (when num-start (format "    :number-lines: %s\n" num-start))
 		   (when class (format "    :class: %s\n" class))
-		   (when label (format "    :name: %s\n"
-							   (org-export-solidify-link-text label)))
+		   (when label (format "    :name: %s\n" label))
 		   "\n"
 		   (org-rst--indent-string value org-rst-quote-margin)
 		  )))))))
@@ -1492,8 +1486,7 @@ contextual information."
      (if caption (format ".. table:: %s\n" (org-export-data caption info))
 	   ".. table::\n")
 	 (when class (format "    :class: %s\n" class))
-	 (when label (format "    :name: %s\n"
-						 (org-export-solidify-link-text label)))
+	 (when label (format "    :name: %s\n" label))
 	 "\n"
 	 (org-rst--indent-string contents org-rst-quote-margin))))
 
@@ -1574,8 +1567,7 @@ a communication channel."
   "Transcode a TARGET object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  (format "\n.. _%s:\n\n"
-	  (org-export-solidify-link-text (org-element-property :value target))))
+  (format "\n.. _%s:\n\n" (org-element-property :value target)))
 
 
 ;;;; Timestamp
