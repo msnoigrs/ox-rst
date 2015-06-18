@@ -132,7 +132,7 @@
    reStructuredText:
 #+BEGIN_SRC rst
   Lord of the Rings
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~~~~~~~~~~~~~~~~
 
   1. The attack of the Rohirrim
 
