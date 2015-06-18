@@ -317,7 +317,7 @@
 #+BEGIN_EXAMPLE
   ,#+BEGIN_SRC lisp
   (require 'ox-rst)
-  ,#+END SRC
+  ,#+END_SRC
 #+END_EXAMPLE
 
     reStructuredText:
