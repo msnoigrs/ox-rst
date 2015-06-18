@@ -55,7 +55,7 @@
    reStructuredText:
 #+BEGIN_SRC rst
   This is the title of the document
-  ==================================================================
+  =================================
 
       :Author: Author
       :Contact: mailaddress@example.com
