@@ -675,7 +675,7 @@ channel."
 (defun org-rst-footnote-reference (footnote-reference contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
-  (format " [%s]_" (org-export-get-footnote-number footnote-reference info)))
+  (format " [%s]_ " (org-export-get-footnote-number footnote-reference info)))
 
 
 ;;;; Headline
@@ -1107,7 +1107,7 @@ contextual information."
   ;; Protect `, *, _ and \
   (setq text (replace-regexp-in-string "[`*_\\]" "\\\\\\&" text))
   ;; Protect ..
-  (setq text (replace-regexp-in-string "^[\s-]*\\.\\. " "\\\\.. " text))
+  (setq text (replace-regexp-in-string "^[\s-]*\\.\\. [^\\[]" "\\\\.. " text))
   ;; Protect ^\d+.
   (setq text (replace-regexp-in-string "^\\(\\d\\)+\\." "\\1\\." text))
   ;; Handle break preservation, if required.
