@@ -1263,7 +1263,7 @@ holding contextual information."
 			  (org-rst--indent-string contents org-rst-quote-margin))))
 		  (t
 		   (concat
-			(format "::\n")
+			"::\n"
 			(when class (format "    :class: %s\n" class))
 			(when label (format "    :name: %s\n" label))
 			"\n"
