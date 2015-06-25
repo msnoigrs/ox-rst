@@ -99,7 +99,8 @@
       (:rst-inline-images nil nil org-rst-inline-images)
       (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
       (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
-	  (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home))
+	  (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home)
+      (:rst-link-use-ref-role nil nil org-rst-link-use-ref-role))
   :filters-alist '((:filter-options . org-rst-math-block-options-filter)
                    (:filter-headline . org-rst-filter-headline-blank-lines)
 				   (:filter-parse-tree org-rst-math-block-tree-filter
@@ -166,6 +167,10 @@ link's path."
   :type '(alist :key-type (string :tag "Type")
 		:value-type (regexp :tag "Path")))
 
+(defcustom org-rst-link-use-ref-role nil
+  "Non-nil means export internal links using :ref: role."
+  :group 'org-export-rst
+  :type 'boolean)
 
 (defcustom org-rst-text-markup-alist '((bold . "**%s**")
 									   (code . verb)
@@ -419,82 +424,6 @@ See `org-rst-text-markup-alist' for details."
 		(format fmt text)))
      ;; Else use format string.
      (t (format fmt text)))))
-
-
-(defun org-rst--describe-links (links info)
-  "Return a string describing a list of links.
-
-LINKS is a list of link type objects, as returned by
-`org-rst--unique-links'.  INFO is a plist used as a communication
-channel."
-  (mapconcat
-   (lambda (link)
-     (let ((type (org-element-property :type link))
-	   (anchor (let ((desc (org-element-contents link)))
-		     (if desc (org-export-data desc info)
-		       (org-element-property :raw-link link)))))
-       (cond
-	;; Coderefs, radio links and fuzzy links are ignored.
-	((member type '("coderef" "radio" "fuzzy")) nil)
-	;; Id and custom-id links: Headlines refer to their numbering.
-	((member type '("custom-id" "id"))
-	 (let ((dest (org-export-resolve-id-link link info)))
-	   (concat
-		(format
-		 "`%s <%s>`_"
-		 anchor
-		 (if (not dest) "Unknown reference"
-		   (format
-			"See section %s"
-			(mapconcat 'number-to-string
-					   (org-export-get-headline-number dest info) "."))))
-		   "\n\n")))
-	;; Do not add a link that cannot be resolved and doesn't have
-	;; any description: destination is already visible in the
-	;; paragraph.
-	((not (org-element-contents link)) nil)
-	(t
-	 (concat
-	  (format "`%s <%s>`_" anchor (org-element-property :raw-link link))
-	  "\n\n")))))
-   links ""))
-
-
-(defun org-rst--unique-links (element info)
-  "Return a list of unique link references in ELEMENT.
-
-ELEMENT is either a headline element or a section element.  INFO
-is a plist used as a communication channel."
-  (let* (seen
-		 (unique-link-p
-		  (function
-		   ;; Return LINK if it wasn't referenced so far, or nil.
-		   ;; Update SEEN links along the way.
-		   (lambda (link)
-			 (let ((footprint
-                    ;; Normalize description in footprints.
-					(cons (org-element-property :raw-link link)
-                          (let ((contents (org-element-contents link)))
-                            (and contents
-                                 (replace-regexp-in-string
-                                  "[ \r\t\n]+" " "
-                                  (org-trim
-                                   (org-element-interpret-data contents))))))))
-			   ;; Ignore LINK if it hasn't been translated already.
-			   ;; It can happen if it is located in an affiliated
-			   ;; keyword that was ignored.
-			   (when (and (org-string-nw-p
-						   (gethash link (plist-get info :exported-data)))
-						  (not (member footprint seen)))
-				 (push footprint seen) link)))))
-		 ;; If at a section, find parent headline, if any, in order to
-		 ;; count links that might be in the title.
-		 (headline
-		  (if (eq (org-element-type element) 'headline) element
-			(or (org-export-get-parent-headline element) element))))
-    ;; Get all links in HEADLINE.
-    (org-element-map headline 'link
-      (lambda (l) (funcall unique-link-p l)) info nil nil t)))
 
 
 (defun org-rst--checkbox (item info)
@@ -759,24 +688,20 @@ holding contextual information."
   ;; of the template.
   (unless (org-element-property :footnote-section-p headline)
     (let* (;; Blank lines between headline and its contents.
-		   ;; `org-rst-headline-spacing', when set, overwrites
-		   ;; original buffer's spacing.
-		   (pre-blanks
-			(make-string
-			 (if org-rst-headline-spacing (car org-rst-headline-spacing)
-			   (org-element-property :pre-blank headline)) ?\n))
-		   ;; Even if HEADLINE has no section, there might be some
-		   ;; links in its title that we shouldn't forget to describe.
-		   (links
-			(unless (or (eq (caar (org-element-contents headline)) 'section))
-			  (let ((title (org-element-property :title headline)))
-				(when (consp title)
-				  (org-rst--describe-links
-				   (org-rst--unique-links title info) info))))))
-	  (concat
-	   (org-rst--build-title headline info 'underline)
-	   "\n" pre-blanks
-	   (concat (when (org-string-nw-p links) links) contents)))))
+           ;; `org-rst-headline-spacing', when set, overwrites
+           ;; original buffer's spacing.
+           (pre-blanks
+            (make-string
+             (if org-rst-headline-spacing (car org-rst-headline-spacing)
+               (org-element-property :pre-blank headline)) ?\n))
+           (customid (org-element-property :CUSTOM_ID headline))
+           (label (when customid
+                    (format ".. _%s:\n\n" customid))))
+      (concat
+       (or label "")
+       (org-rst--build-title headline info 'underline)
+       "\n" pre-blanks
+       contents))))
 
 
 ;;;; Horizontal Rule
@@ -1112,28 +1037,20 @@ INFO is a plist holding contextual information."
 				  (org-export-data (org-element-property :raw-link link) info)))
 			 (if desc (format "`%s <%s>`_" desc rawlink)
 			   (format "`%s`_" rawlink))))
-		  ;; LINK points to a headline.  If headlines are numbered
-		  ;; and the link has no description, display headline's
-		  ;; number.  Otherwise, display description or headline's
-		  ;; title.
+		  ;; LINK points to a headline.
 		  (headline
-		   (let ((label
-				  (mapconcat
-				   'number-to-string
-				   (org-export-get-headline-number destination info)
-				   ".")))
-			 (if (and (plist-get info :section-numbers) (not desc))
-				 (format "`%s`_" label)
-			   (format "`%s <%s>`_" label
-					   (or desc
-						   (org-export-data
-							(org-element-property :title destination) info))))))
-          ;; Fuzzy link points to a target.  Do as above.
+             (if (member type '("custom-id" "id"))
+                 (if (plist-get info :rst-link-use-ref-role)
+                     (if desc (format " :ref:`%s <%s>`" desc raw-path)
+                       (format " :ref:`%s`" raw-path))
+                   (format "`%s`_" raw-path))
+               (format "`%s`_" (org-rst--build-title destination info nil))))
+          ;; Fuzzy link points to a target.
 		  (otherwise
            (if (not desc) (format "`%s`_" path)
              (format "`%s <%s>`_" desc path))))))
      ;; Coderef: replace link with the reference name or the
-     ;; equivalent line number.
+     ;; equivalent line number. It is not supported in ReST.
      ((string= type "coderef")
       (format (org-export-get-coderef-format path desc)
 			  (org-export-resolve-coderef path info)))
@@ -1567,7 +1484,7 @@ a communication channel."
   "Transcode a TARGET object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  (format "\n.. _%s:\n\n" (org-element-property :value target)))
+  (format " _`%s` " (org-element-property :value target)))
 
 
 ;;;; Timestamp
