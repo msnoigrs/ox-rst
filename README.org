@@ -634,7 +634,7 @@ either
     | 1 | 2 | 3 |
     +---+---+---+
 
-Internal cross references, label `sampletable`_
+  Internal cross references, label `sampletable`_
 #+END_SRC
 
    Org:
