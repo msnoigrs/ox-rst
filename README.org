@@ -583,7 +583,7 @@ either
 #+BEGIN_EXAMPLE
   ,* headline
 
-  Internal cross references, [[headline]]
+  Internal cross references, [[*headline]]
 #+END_EXAMPLE
 
    reStructuredText:
