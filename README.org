@@ -654,6 +654,35 @@ either
   Internal cross references, label `samplefigure`_
 #+END_SRC
 
+** Footnote
+
+   Org:
+#+BEGIN_EXAMPLE
+  ,* footnote sample
+
+  Org mode[fn:org] is for keeping notes, maintaining TODO lists, planning projects, and authoring documents with a fast and effective plain-text system.
+
+  reStructuredText[fn:rest] is plaintext that uses simple and intuitive constructs to indicate the structure of a document.
+
+  [fn:org] org-mode [[http://orgmode.org]]
+  [fn:rest] reStructuredText [[http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html]]
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  footnote sample
+  ---------------
+
+  Org mode [2]_  is for keeping notes, maintaining TODO lists, planning projects, and authoring documents with a fast and effective plain-text system.
+
+  reStructuredText [1]_  is plaintext that uses simple and intuitive constructs to indicate the structure of a document.
+
+
+  .. [1] reStructuredText `http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html <http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html>`_
+
+  .. [2] org-mode `http://orgmode.org <http://orgmode.org>`_
+#+END_SRC
+
 ** Export reStructuredText fragments
 
    Org:
