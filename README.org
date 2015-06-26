@@ -567,21 +567,91 @@ either
 
    Org:
 #+BEGIN_EXAMPLE
-  Internal crossreferences, like [[example]]
+  This is an <<example>> cross reference target.
 
-  <<example>>
-  This is an example crossreference target.
+  Internal cross references, like [[example]]
 #+END_EXAMPLE
 
    reStructuredText:
 #+BEGIN_SRC rst
-Internal crossreferences, like `example`_
+  This is an  _`example`  cross reference target.
 
+  Internal cross references, like `example`_
+#+END_SRC
 
-.. _example:
+   Org:
+#+BEGIN_EXAMPLE
+  ,* headline
 
+  Internal cross references, [[headline]]
+#+END_EXAMPLE
 
-This is an example crossreference target.
+   reStructuredText:
+#+BEGIN_SRC rst
+  headline
+  --------
+
+  Internal cross references, `headline`_
+#+END_SRC
+
+   Org:
+#+BEGIN_EXAMPLE
+  ,* headline
+    :PROPERTIES:
+    :CUSTOM_ID: customid
+    :END:
+
+  Internal cross references, headline [[#customid]]
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  .. _customid:
+
+  headline
+  --------
+
+  Internal cross references, headline `customid`_
+#+END_SRC
+
+   Org:
+#+BEGIN_EXAMPLE
+  ,#+NAME: sampletable
+  | a | b | c |
+  | 1 | 2 | 3 |
+
+  Internal cross references, label [[sampletable]]
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  .. table::
+    :name: sampletable
+
+    +---+---+---+
+    | a | b | c |
+    +---+---+---+
+    | 1 | 2 | 3 |
+    +---+---+---+
+
+Internal cross references, label `sampletable`_
+#+END_SRC
+
+   Org:
+#+BEGIN_EXAMPLE
+  ,#+NAME: samplefigure
+  [[./image.jpg]]
+
+  Internal cross references, label [[samplefigure]]
+#+END_EXAMPLE
+
+   reStructuredText:
+#+BEGIN_SRC rst
+  .. _samplefigure:
+
+  .. image:: ./image.jpg
+
+  Internal cross references, label `samplefigure`_
 #+END_SRC
 
 ** Export reStructuredText fragments
