@@ -1000,13 +1000,17 @@ INFO is a plist holding contextual information."
      ((and (plist-get info :rst-inline-images)
            (org-export-inline-image-p
             link (plist-get info :rst-inline-image-rules)))
-	  (let ((ipath (if (not (file-name-absolute-p raw-path)) raw-path
+	  (let* ((ipath (if (not (file-name-absolute-p raw-path)) raw-path
 					 (expand-file-name raw-path)))
-			(caption (org-export-get-caption
-					  (org-export-get-parent-element link))))
-		(if caption (format ".. figure:: %s%s\n\n    %s\n" ipath attributes
+             (caption (org-export-get-caption
+					  (org-export-get-parent-element link)))
+             (linkname
+              (org-element-property :name (org-export-get-parent-element link)))
+             (label (if linkname (format ".. _%s:\n\n" linkname) "")))
+		(if caption (format "%s.. figure:: %s%s\n\n    %s\n"
+                            label ipath attributes
 							(org-export-data caption info))
-		  (format ".. image:: %s%s\n" ipath	attributes))))
+		  (format "%s.. image:: %s%s\n" label ipath attributes))))
      ((and (plist-get info :rst-inline-images)
            desc
            (my-org-export-inline-image-p
