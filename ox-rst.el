@@ -40,8 +40,6 @@
     (center-block . org-rst-center-block)
     (clock . org-rst-clock)
     (code . org-rst-code)
-    (comment . org-rst-comment)
-    (comment-block . org-rst-comment-block)
     (drawer . org-rst-drawer)
     (dynamic-block . org-rst-dynamic-block)
     (entity . org-rst-entity)
