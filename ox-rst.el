@@ -477,6 +477,7 @@ INFO is a plist used as a communication channel."
 			   ((org-string-nw-p email) email)) title))
 		  (titleline (make-string (string-width title) ?=)))
 	(concat
+	 titleline "\n"
 	 title "\n"
 	 titleline "\n"
 	 (when (org-string-nw-p author) (concat "\n    :Author: " author))
