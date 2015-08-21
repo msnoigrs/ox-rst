@@ -92,13 +92,14 @@
 	   ((?R "As reStructuredText buffer" org-rst-export-as-rst)
 		(?r "As reStructuredText file" org-rst-export-to-rst)))
   :options-alist
-    '((:rst-link-org-as-html nil nil org-rst-link-org-files-as-html)
-	  (:rst-link-use-abs-url nil "rst-link-use-abs-url" org-rst-link-use-abs-url)
-      (:rst-inline-images nil nil org-rst-inline-images)
-      (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
-      (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
-	  (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home)
-      (:rst-link-use-ref-role nil nil org-rst-link-use-ref-role))
+  '((:subtitle "SUBTITLE" nil nil parse)
+    (:rst-link-org-as-html nil nil org-rst-link-org-files-as-html)
+    (:rst-link-use-abs-url nil "rst-link-use-abs-url" org-rst-link-use-abs-url)
+    (:rst-inline-images nil nil org-rst-inline-images)
+    (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
+    (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
+    (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home)
+    (:rst-link-use-ref-role nil nil org-rst-link-use-ref-role))
   :filters-alist '((:filter-options . org-rst-math-block-options-filter)
                    (:filter-headline . org-rst-filter-headline-blank-lines)
 				   (:filter-parse-tree org-rst-math-block-tree-filter
@@ -446,9 +447,13 @@ INFO is a plist used as a communication channel."
 INFO is a plist used as a communication channel."
   (let* (;; Links in the title will not be resolved later, so we make
 		 ;; sure their path is located right after them.
-		 (title (if (plist-get info :with-title)
+         (with-title (plist-get info :with-title))
+		 (title (if with-title
                     (org-export-data (plist-get info :title) info)
                   ""))
+		 (subtitle (if with-title
+                       (org-export-data (plist-get info :subtitle) info)
+                     ""))
 		 (author (and (plist-get info :with-author)
 					  (let ((auth (plist-get info :author)))
 						(and auth (org-export-data auth info)))))
@@ -475,11 +480,17 @@ INFO is a plist used as a communication channel."
 				(concat author email))
 			   ((org-string-nw-p author) author)
 			   ((org-string-nw-p email) email)) title))
-		  (titleline (make-string (string-width title) ?=)))
+         (titleline (make-string (string-width title) ?=))
+         (subtitleline (make-string (string-width subtitle) ?-))
+         (subtitle (if (not (string= subtitle ""))
+                       (concat subtitleline "\n"
+                               subtitle "\n"
+                               subtitleline "\n") "")))
 	(concat
 	 titleline "\n"
 	 title "\n"
 	 titleline "\n"
+     subtitle
 	 (when (org-string-nw-p author) (concat "\n    :Author: " author))
 	 (when (org-string-nw-p email) (concat "\n    :Contact: " email))
 	 (when (org-string-nw-p date) (concat "\n    :Date: " date))
