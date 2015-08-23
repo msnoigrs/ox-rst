@@ -392,8 +392,9 @@ either
   ------------
 #+END_SRC
 
-
 ** Comment block
+
+   Comment block will disapper.
 
    Org:
 #+BEGIN_EXAMPLE
@@ -401,12 +402,6 @@ either
   comment
   ,#+END_COMMENT
 #+END_EXAMPLE
-
-   reStructuredText:
-#+BEGIN_SRC rst
-  ..
-      comment
-#+END_SRC
 
 ** Images and Tables
 
