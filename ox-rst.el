@@ -1309,11 +1309,21 @@ holding contextual information."
   "Transcode a SPECIAL-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
-  (let ((type (org-element-property :type special-block)))
-    (format ".. %s::\n%s\n"
-      type
-      (org-rst--indent-string contents org-rst-quote-margin))))
-
+  (let* ((attributes
+          (org-export-read-attribute :attr_rst special-block))
+		 (title (plist-get attributes :title))
+         (class (plist-get attributes :class))
+		 (label (org-element-property :name special-block))
+         (type (org-element-property :type special-block)))
+    (concat
+     (format ".. %s::" type)
+     (when title (format " %s" title))
+     "\n"
+     (when class (format "    :class: %s\n" class))
+     (when label (format "    :name: %s\n" label))
+     "\n"
+     (when contents
+       (org-rst--indent-string contents org-rst-quote-margin)))))
 
 ;;;; Src Block
 
