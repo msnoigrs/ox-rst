@@ -276,6 +276,37 @@
       but not any simpler -- Albert Einstein
 #+END_SRC
 
+*** Special blocks
+
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+BEGIN_caution
+  This is the second line of the first paragraph.
+  ,#+END_caution
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. caution::
+
+      This is the second line of the first paragraph.
+#+END_SRC
+
+    Org:
+#+BEGIN_EXAMPLE
+  ,#+ATTR_RST: :title This is a note admonition.
+  ,#+BEGIN_note
+  This is the second line of the first paragraph.
+  ,#+END_note
+#+END_EXAMPLE
+
+    reStructuredText:
+#+BEGIN_SRC rst
+  .. note:: This is a note admonition.
+
+      This is the second line of the first paragraph.
+#+END_SRC
+
 *** Center block
 
     Center block will not affect.
