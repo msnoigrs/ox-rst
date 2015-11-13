@@ -401,7 +401,8 @@ possible.  It doesn't apply to `inlinetask' elements."
 (defun org-rst--text-markup (text markup)
   "Format TEXT depending on MARKUP text markup.
 See `org-rst-text-markup-alist' for details."
-  (let ((fmt (cdr (assq markup org-rst-text-markup-alist))))
+  (let ((fmt (cdr (assq markup org-rst-text-markup-alist)))
+        (text (replace-regexp-in-string "[ \t\n]+" " " text)))
     (cond
      ;; No format string: Return raw text.
      ((not fmt) text)
