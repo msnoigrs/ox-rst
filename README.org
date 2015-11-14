@@ -363,12 +363,12 @@
 
    Org:
 #+BEGIN_EXAMPLE
-  ,*bold* /italic/ _underlined_ =code= ~verbatim~ +strike-through+
+  ,*bold* /italic/ _underlined_ =verbatim= ~code~ +strike-through+
 #+END_EXAMPLE
 
    reStructuredText:
 #+BEGIN_SRC rst
-  ,**bold** *italic* underlined ``code`` ``verbatim`` strike-through
+  ,**bold** *italic* underlined ``verbatim`` ``code`` strike-through
 #+END_SRC
 
 ** Subscript and superscript
