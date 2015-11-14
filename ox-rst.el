@@ -505,9 +505,10 @@ holding export options."
   (concat
    ;; Build title block.
    (concat (org-rst-template--document-title info)
+           "\n"
 		   ;; 2. Table of contents.
 		   (let ((depth (plist-get info :with-toc)))
-			 (when depth "\n.. contents::\n")))
+			 (when depth ".. contents::\n\n")))
    ;; Document's body.
    contents
    ;; Creator.  Justify it to the bottom right.
