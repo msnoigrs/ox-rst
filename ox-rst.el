@@ -468,17 +468,18 @@ INFO is a plist used as a communication channel."
 			   ((and (org-string-nw-p date) (org-string-nw-p author))
 				(concat
 				 author
+				 " "
 				 date
-				 (when (org-string-nw-p email) email)))
+				 (when (org-string-nw-p email) (concat " " email))))
 			   ((and (org-string-nw-p date) (org-string-nw-p email))
 				(concat
 				 email
-				 date
+				 " "
 				 date))
 			   ((org-string-nw-p date)
 				date)
 			   ((and (org-string-nw-p author) (org-string-nw-p email))
-				(concat author email))
+				(concat author " " email))
 			   ((org-string-nw-p author) author)
 			   ((org-string-nw-p email) email)) title))
          (titleline (make-string (string-width title) ?=))
