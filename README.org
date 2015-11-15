@@ -714,10 +714,20 @@ either
 
    Org:
 #+BEGIN_EXAMPLE
-  ,#+RST: .. class:: alert
+  See also @@rst::meth:`mypackage.mymodule.MyClass.mymethod()`@@.
+  
+  #+RST: .. class:: alert
+  
+  ,#+BEGIN_RST
+  .. class:: alert
+  ,#+END_RST
 #+END_EXAMPLE
 
    reStructuredText:
 #+BEGIN_SRC rst
+  See also :meth:`mypackage.mymodule.MyClass.mymethod()`.
+
+  .. class:: alert
+  
   .. class:: alert
 #+END_SRC
