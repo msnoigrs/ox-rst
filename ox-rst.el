@@ -46,7 +46,7 @@
     (example-block . org-rst-example-block)
     (export-block . org-rst-export-block)
     (export-snippet . org-rst-export-snippet)
-    (fixed-width . org-rst-fixed-width)
+    (fixed-width . org-rst-example-block)
     (footnote-reference . org-rst-footnote-reference)
     (headline . org-rst-headline)
     (horizontal-rule . org-rst-horizontal-rule)
@@ -661,15 +661,6 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (when (eq (org-export-snippet-backend export-snippet) 'rst)
     (org-element-property :value export-snippet)))
-
-
-;;;; Fixed Width
-
-(defun org-rst-fixed-width (fixed-width contents info)
-  "Transcode a FIXED-WIDTH element from Org to reStructuredText.
-CONTENTS is nil.  INFO is a plist used as a communication
-channel."
-  (org-rst--text-markup (org-element-property :value fixed-width) 'verbatim))
 
 
 ;;;; Footnote Definition
