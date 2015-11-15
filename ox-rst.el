@@ -1,4 +1,4 @@
-;;; ox-rst.el --- Export reStructuredText using org-mode.
+;;; ox-rst.el --- Export reStructuredText using org-mode. -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015  IGARASHI Masanao
 
@@ -311,7 +311,7 @@ Empty lines are not indented."
      "\\(^\\)\\(?:.*\\S-\\)" (make-string width ? ) s nil nil 1)))
 
 
-(defun org-rst--has-caption-p (element info)
+(defun org-rst--has-caption-p (element _info)
   "Non-nil when ELEMENT has a caption affiliated keyword.
 INFO is a plist used as a communication channel.  This function
 is meant to be used as a predicate for `org-export-get-ordinal'."
@@ -426,7 +426,7 @@ See `org-rst-text-markup-alist' for details."
      (t (format fmt text)))))
 
 
-(defun org-rst--checkbox (item info)
+(defun org-rst--checkbox (item _info)
   "Return checkbox string for ITEM or nil.
 INFO is a plist used as a communication channel."
   ;(let ((utf8p (eq (plist-get info :ascii-charset) 'utf-8)))
@@ -524,7 +524,7 @@ holding export options."
 
 ;;;; Bold
 
-(defun org-rst-bold (bold contents info)
+(defun org-rst-bold (_bold contents _info)
   "Transcode BOLD from Org to reStructuredText.
 CONTENTS is the text with bold markup.  INFO is a plist holding
 contextual information."
@@ -533,7 +533,7 @@ contextual information."
 
 ;;;; Center Block
 
-(defun org-rst-center-block (center-block contents info)
+(defun org-rst-center-block (_center-block contents _info)
   "Transcode a CENTER-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the center block.  INFO is a plist
 holding contextual information."
@@ -542,7 +542,7 @@ holding contextual information."
 
 ;;;; Clock
 
-(defun org-rst-clock (clock contents info)
+(defun org-rst-clock (clock _contents _info)
   "Transcode a CLOCK object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -560,7 +560,7 @@ information."
 
 ;;;; Code
 
-(defun org-rst-code (code contents info)
+(defun org-rst-code (code _contents _info)
   "Transcode a CODE object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
@@ -568,7 +568,7 @@ channel."
 
 
 ;;; Comment
-(defun org-rst-comment (comment contents info)
+(defun org-rst-comment (comment _contents _info)
   "Transcode a COMMENT object from Org to reStructuredText.
 CONTENTS is the text in the comment.  INFO is a plist holding
 contextual information."
@@ -577,7 +577,7 @@ contextual information."
 
 ;;; Comment Block
 
-(defun org-rst-comment-block (comment-block contents info)
+(defun org-rst-comment-block (comment-block _contents _info)
   "Transcode a COMMENT-BLOCK object from Org to reStructuredText.
 CONTENTS is the text within the block.  INFO is a plist holding
 contextual information."
@@ -589,7 +589,7 @@ contextual information."
 
 ;;;; Drawer
 
-(defun org-rst-drawer (drawer contents info)
+(defun org-rst-drawer (drawer contents _info)
   "Transcode a DRAWER element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
@@ -605,7 +605,7 @@ holding contextual information."
 
 ;;;; Dynamic Block
 
-(defun org-rst-dynamic-block (dynamic-block contents info)
+(defun org-rst-dynamic-block (_dynamic-block contents _info)
   "Transcode a DYNAMIC-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
@@ -614,7 +614,7 @@ holding contextual information."
 
 ;;;; Entity
 
-(defun org-rst-entity (entity contents info)
+(defun org-rst-entity (entity _contents _info)
   "Transcode an ENTITY object from Org to reStructuredText.
 CONTENTS are the definition itself.  INFO is a plist holding
 contextual information."
@@ -626,7 +626,7 @@ contextual information."
 
 ;;;; Example Block
 
-(defun org-rst-example-block (example-block contents info)
+(defun org-rst-example-block (example-block _contents _info)
   "Transcode an EXAMPLE-BLOCK element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -647,7 +647,7 @@ information."
 
 ;;;; Export Block
 
-(defun org-rst-export-block (export-block contents info)
+(defun org-rst-export-block (export-block _contents _info)
   "Transcode a EXPORT-BLOCK element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (when (member (org-element-property :type export-block) '("RST" "REST" "RESTRUCTUREDTEXT"))
@@ -656,7 +656,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Export Snippet
 
-(defun org-rst-export-snippet (export-snippet contents info)
+(defun org-rst-export-snippet (export-snippet _contents _info)
   "Transcode a EXPORT-SNIPPET object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (when (eq (org-export-snippet-backend export-snippet) 'rst)
@@ -676,7 +676,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Footnote Reference
 
-(defun org-rst-footnote-reference (footnote-reference contents info)
+(defun org-rst-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (format " [%s]_ " (org-export-get-footnote-number footnote-reference info)))
@@ -710,14 +710,14 @@ holding contextual information."
 
 ;;;; Horizontal Rule
 
-(defun org-rst-horizontal-rule (horizontal-rule contents info)
+(defun org-rst-horizontal-rule (_horizontal-rule _contents _info)
   "Transcode an HORIZONTAL-RULE object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   "\n------------\n")
 
 ;;;; Inline Src Block
 
-(defun org-rst-inline-src-block (inline-src-block contents info)
+(defun org-rst-inline-src-block (inline-src-block _contents _info)
   "Transcode an INLINE-SRC-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
@@ -802,7 +802,7 @@ holding export options."
 
 ;;;; Italic
 
-(defun org-rst-italic (italic contents info)
+(defun org-rst-italic (_italic contents _info)
   "Transcode ITALIC from Org to reStructuredText.
 CONTENTS is the text with italic markup.  INFO is a plist holding
 contextual information."
@@ -852,7 +852,7 @@ a communication channel."
 
 ;;;; Keyword
 
-(defun org-rst-keyword (keyword contents info)
+(defun org-rst-keyword (keyword _contents _info)
   "Transcode a KEYWORD element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (let ((key (org-element-property :key keyword))
@@ -864,7 +864,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Latex Environment
 
-(defun org-rst-latex-environment (latex-environment contents info)
+(defun org-rst-latex-environment (latex-environment _contents info)
   "Transcode a LATEX-ENVIRONMENT element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -874,7 +874,7 @@ information."
 
 ;;;; Latex Fragment
 
-(defun org-rst-latex-fragment (latex-fragment contents info)
+(defun org-rst-latex-fragment (latex-fragment _contents _info)
   "Transcode a LATEX-FRAGMENT object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -897,7 +897,7 @@ information."
 
 ;;;; Line Break
 
-(defun org-rst-line-break (line-break contents info)
+(defun org-rst-line-break (_line-break _contents _info)
   "Transcode a LINE-BREAK object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
   information."
@@ -1076,7 +1076,7 @@ INFO is a plist holding contextual information."
 
 ;;;; Node Property
 
-(defun org-rst-node-property (node-property contents info)
+(defun org-rst-node-property (node-property _contents _info)
   "Transcode a NODE-PROPERTY element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -1088,7 +1088,7 @@ information."
 
 ;;;; Paragraph
 
-(defun org-rst-paragraph (paragraph contents info)
+(defun org-rst-paragraph (_paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to reStructuredText.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
@@ -1097,7 +1097,7 @@ the plist used as a communication channel."
 
 ;;;; Plain List
 
-(defun org-rst-plain-list (plain-list contents info)
+(defun org-rst-plain-list (_plain-list contents _info)
   "Transcode a PLAIN-LIST element from Org to reStructuredText.
 CONTENTS is the contents of the list.  INFO is a plist holding
 contextual information."
@@ -1127,7 +1127,7 @@ contextual information."
 
 ;;;; Planning
 
-(defun org-rst-planning (planning contents info)
+(defun org-rst-planning (planning _contents _info)
   "Transcode a PLANNING element from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
@@ -1154,7 +1154,7 @@ channel."
 
 ;;;; Property Drawer
 
-(defun org-rst-property-drawer (property-drawer contents info)
+(defun org-rst-property-drawer (_property-drawer contents _info)
   "Transcode a PROPERTY-DRAWER element from Org to reStructuredText.
 CONTENTS holds the contents of the drawer.  INFO is a plist
 holding contextual information."
@@ -1219,15 +1219,15 @@ containing export options.  Modify DATA by side-effect and return it."
     ;; Return updated DATA.
     data))
 
-(defun org-rst-math-block-tree-filter (tree backend info)
+(defun org-rst-math-block-tree-filter (tree _backend info)
   (org-rst--wrap-latex-math-block tree info))
 
-(defun org-rst-math-block-options-filter (info backend)
+(defun org-rst-math-block-options-filter (info _backend)
   (dolist (prop '(:author :date :title) info)
     (plist-put info prop
 	       (org-rst--wrap-latex-math-block (plist-get info prop) info))))
 
-(defun org-rst-math-block (math-block contents info)
+(defun org-rst-math-block (_math-block contents _info)
   "Transcode a MATH-BLOCK object from Org to LaTeX.
 CONTENTS is a string.  INFO is a plist used as a communication
 channel."
@@ -1242,7 +1242,7 @@ channel."
 
 ;;;; Quote Block
 
-(defun org-rst-quote-block (quote-block contents info)
+(defun org-rst-quote-block (quote-block contents _info)
   "Transcode a QUOTE-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
@@ -1281,7 +1281,7 @@ holding contextual information."
 
 ;;;; Radio Target
 
-(defun org-rst-radio-target (radio-target contents info)
+(defun org-rst-radio-target (_radio-target contents _info)
   "Transcode a RADIO-TARGET object from Org to reStructuredText.
 CONTENTS is the contents of the target.  INFO is a plist holding
 contextual information."
@@ -1290,7 +1290,7 @@ contextual information."
 
 ;;;; Section
 
-(defun org-rst-section (section contents info)
+(defun org-rst-section (_section contents _info)
   "Transcode a SECTION element from Org to reStructuredText.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
@@ -1299,7 +1299,7 @@ holding contextual information."
 
 ;;;; Special Block
 
-(defun org-rst-special-block (special-block contents info)
+(defun org-rst-special-block (special-block contents _info)
   "Transcode a SPECIAL-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
@@ -1321,7 +1321,7 @@ holding contextual information."
 
 ;;;; Src Block
 
-(defun org-rst-src-block (src-block contents info)
+(defun org-rst-src-block (src-block _contents info)
   "Transcode a SRC-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
@@ -1364,7 +1364,7 @@ contextual information."
 
 ;;;; Statistics Cookie
 
-(defun org-rst-statistics-cookie (statistics-cookie contents info)
+(defun org-rst-statistics-cookie (statistics-cookie _contents _info)
   "Transcode a STATISTICS-COOKIE object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (org-element-property :value statistics-cookie))
@@ -1372,7 +1372,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Strike-Through
 
-(defun org-rst-strike-through (strike-through contents info)
+(defun org-rst-strike-through (_strike-through contents _info)
   "Transcode STRIKE-THROUGH from Org to reStructuredText.
 CONTENTS is the text with strike-through markup.  INFO is a plist
 holding contextual information."
@@ -1381,7 +1381,7 @@ holding contextual information."
 
 ;;;; Subscript
 
-(defun org-rst-subscript (subscript contents info)
+(defun org-rst-subscript (_subscript contents _info)
   "Transcode a SUBSCRIPT object from Org to reStructuredText.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
@@ -1390,7 +1390,7 @@ contextual information."
 
 ;;;; Superscript
 
-(defun org-rst-superscript (superscript contents info)
+(defun org-rst-superscript (_superscript contents _info)
   "Transcode a SUPERSCRIPT object from Org to reStructuredText.
 CONTENTS is the contents of the object.  INFO is a plist holding
 contextual information."
@@ -1472,7 +1472,7 @@ a communication channel."
                  (t ?-)))
                (makeline
                 (function
-                 (lambda (rowcontents linebit)
+                 (lambda (_rowcontents linebit)
                    (format "+%s+"
                            (mapconcat
                             'identity
@@ -1501,7 +1501,7 @@ a communication channel."
 
 ;;;; Target
 
-(defun org-rst-target (target contents info)
+(defun org-rst-target (target _contents _info)
   "Transcode a TARGET object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -1510,7 +1510,7 @@ information."
 
 ;;;; Timestamp
 
-(defun org-rst-timestamp (timestamp contents info)
+(defun org-rst-timestamp (timestamp _contents info)
   "Transcode a TIMESTAMP object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
@@ -1519,7 +1519,7 @@ information."
 
 ;;;; Underline
 
-(defun org-rst-underline (underline contents info)
+(defun org-rst-underline (_underline contents _info)
   "Transcode UNDERLINE from Org to reStructuredText.
 CONTENTS is the text with underline markup.  INFO is a plist
 holding contextual information."
@@ -1528,7 +1528,7 @@ holding contextual information."
 
 ;;;; Verbatim
 
-(defun org-rst-verbatim (verbatim contents info)
+(defun org-rst-verbatim (verbatim _contents _info)
   "Transcode a VERBATIM object from Org to reStructredText.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
@@ -1537,7 +1537,7 @@ channel."
 
 ;;;; Verse Block
 
-(defun org-rst-verse-block (verse-block contents info)
+(defun org-rst-verse-block (_verse-block contents _info)
   "Transcode a VERSE-BLOCK element from Org to reStructuredText.
 CONTENTS is verse block contents.  INFO is a plist holding
 contextual information."
@@ -1550,7 +1550,7 @@ contextual information."
 
 ;;; Filters
 
-(defun org-rst-separate-elements (tree backend info)
+(defun org-rst-separate-elements (tree _backend _info)
   "Make sure elements are separated by at least one blank line.
 
 TREE is the parse tree being exported.  BACKEND is the export
@@ -1568,7 +1568,7 @@ Assume BACKEND is `rst'."
   ;; Return updated tree.
   tree)
 
-(defun org-rst-filter-headline-blank-lines (headline back-end info)
+(defun org-rst-filter-headline-blank-lines (headline _back-end _info)
   "Filter controlling number of blank lines after a headline.
 
 HEADLINE is a string representing a transcoded headline.
@@ -1581,7 +1581,7 @@ This function only applies to `rst' back-end.  See
     (let ((blanks (make-string (1+ (cdr org-rst-headline-spacing)) ?\n)))
       (replace-regexp-in-string "\n\\(?:\n[ \t]*\\)*\\'" blanks headline))))
 
-(defun org-rst-filter-paragraph-spacing (tree back-end info)
+(defun org-rst-filter-paragraph-spacing (tree _back-end info)
   "Filter controlling number of blank lines between paragraphs.
 
 TREE is the parse tree.  BACK-END is the symbol specifying
