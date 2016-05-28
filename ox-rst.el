@@ -488,6 +488,7 @@ INFO is a plist used as a communication channel."
                        (concat subtitleline "\n"
                                subtitle "\n"
                                subtitleline "\n") "")))
+    (if with-title  ;; if with-title is nil, no lines are returned.
 	(concat
 	 titleline "\n"
 	 title "\n"
@@ -496,7 +497,7 @@ INFO is a plist used as a communication channel."
 	 (when (org-string-nw-p author) (concat "\n    :Author: " author))
 	 (when (org-string-nw-p email) (concat "\n    :Contact: " email))
 	 (when (org-string-nw-p date) (concat "\n    :Date: " date))
-	 "\n")))
+	 "\n"))))
 
 
 (defun org-rst-template (contents info)
