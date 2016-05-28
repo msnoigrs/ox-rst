@@ -488,7 +488,7 @@ INFO is a plist used as a communication channel."
                        (concat subtitleline "\n"
                                subtitle "\n"
                                subtitleline "\n") "")))
-    (if with-title
+    (if with-title  ;; if with-title is nil, no lines are returned.
 	(concat
 	 titleline "\n"
 	 title "\n"
