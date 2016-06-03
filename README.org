@@ -1,7 +1,7 @@
 #+TITLE: reStructuredText Back-End for Org Export Engine
 #+AUTHOR: IGARASHI Masanao
 #+EMAIL: syoux2@gmail.com
-#+DATE: 2013/11/03 13:50
+#+DATE: 2016/06/04 00:00
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE: en
@@ -12,7 +12,7 @@
 * Ox-Rst
 
   *Ox-Rst* exports your [[http://orgmode.org][Org]] documents to reStructuredText.
-  Ox-Rst relies on the Org-mode 8.3 export framework.
+  Ox-Rst relies on the Org-mode 9.0 export framework.
 
 * Configuration
 
@@ -718,9 +718,9 @@ either
   
   #+RST: .. class:: alert
   
-  ,#+BEGIN_RST
+  ,#+BEGIN_EXPORT rst
   .. class:: alert
-  ,#+END_RST
+  ,#+END_EXPORT
 #+END_EXAMPLE
 
    reStructuredText:

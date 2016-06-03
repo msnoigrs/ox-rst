@@ -86,7 +86,6 @@
     (verse-block . org-rst-verse-block)
     ;; Pseudo objects and elements.
     (latex-math-block . org-rst-math-block))
-  :export-block '("RST" "REST" "RESTRUCTUREDTEXT")
   :menu-entry
   '(?r "Export to reStructuredText"
 	   ((?R "As reStructuredText buffer" org-rst-export-as-rst)
