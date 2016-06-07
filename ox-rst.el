@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 (require 'ox)
 (require 'ox-publish)
 (require 'ox-ascii)
@@ -433,7 +433,7 @@ INFO is a plist used as a communication channel."
   ;    (on (if utf8p "☑ " "[X] "))
   ;    (off (if utf8p "☐ " "[ ] "))
   ;    (trans (if utf8p "☒ " "[-] ")))))
-  (case (org-element-property :checkbox item)
+  (cl-case (org-element-property :checkbox item)
 	(on "☑ ")
 	(off "☐ ")
 	(trans "☒ ")))
@@ -919,10 +919,10 @@ if its description is a single link targeting an image file."
        (org-element-map (org-element-contents link)
 		   (cons 'plain-text org-element-all-objects)
 		 (lambda (obj)
-		   (case (org-element-type obj)
+		   (cl-case (org-element-type obj)
 			 (plain-text (org-string-nw-p obj))
 			 (link (if (= link-count 1) t
-					 (incf link-count)
+					 (cl-incf link-count)
 					 (not (org-export-inline-image-p
 						   obj (plist-get info :rst-inline-image-rules)))))
 			 (otherwise t)))
@@ -1033,7 +1033,7 @@ INFO is a plist holding contextual information."
       (let ((destination (if (string= type "fuzzy")
 							 (org-export-resolve-fuzzy-link link info)
 						   (org-export-resolve-id-link link info))))
-		(case (org-element-type destination)
+		(cl-case (org-element-type destination)
 		  ;; Id link points to an external file.
 		  (plain-text
 		   (if desc (format "`%s <%s>`_" desc destination)
@@ -1176,7 +1176,7 @@ containing export options.  Modify DATA by side-effect and return it."
          (function
           ;; Non-nil when OBJ can be added to the latex math block.
           (lambda (obj)
-            (case (org-element-type obj)
+            (cl-case (org-element-type obj)
               (entity (org-element-property :latex-math-p obj))
               (latex-fragment
                (let ((value (org-element-property :value obj)))
