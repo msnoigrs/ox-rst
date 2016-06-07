@@ -1330,9 +1330,7 @@ contextual information."
 		   (label (org-element-property :name src-block))
 		   (value (org-remove-indentation
 				   (org-element-property :value src-block)))
-		   (num-start (case (org-element-property :number-lines src-block)
-						(continued (org-export-get-loc src-block info))
-						(new 1)))
+           (num-start (org-export-get-loc src-block info))
 		   (retain-labels (org-element-property :retain-labels src-block))
 		   (attributes
 			(org-export-read-attribute :attr_rst src-block))
