@@ -461,41 +461,30 @@ INFO is a plist used as a communication channel."
 					 (org-export-data (plist-get info :email) info)))
 		 (date (and (plist-get info :with-date)
 					(org-export-data (org-export-get-date info) info)))
-		 (title
-		  (if (string= title "")
-			  (cond
-			   ((and (org-string-nw-p date) (org-string-nw-p author))
-				(concat
-				 author
-				 " "
-				 date
-				 (when (org-string-nw-p email) (concat " " email))))
-			   ((and (org-string-nw-p date) (org-string-nw-p email))
-				(concat
-				 email
-				 " "
-				 date))
-			   ((org-string-nw-p date)
-				date)
-			   ((and (org-string-nw-p author) (org-string-nw-p email))
-				(concat author " " email))
-			   ((org-string-nw-p author) author)
-			   ((org-string-nw-p email) email)) title))
          (titleline (make-string (string-width title) ?=))
          (subtitleline (make-string (string-width subtitle) ?-))
+         (title (if (not (string= title ""))
+                    (concat titleline "\n"
+                            title "\n"
+                            titleline "\n") ""))
          (subtitle (if (not (string= subtitle ""))
                        (concat subtitleline "\n"
                                subtitle "\n"
                                subtitleline "\n") "")))
-	(concat
-	 titleline "\n"
-	 title "\n"
-	 titleline "\n"
-     subtitle
-	 (when (org-string-nw-p author) (concat "\n    :Author: " author))
-	 (when (org-string-nw-p email) (concat "\n    :Contact: " email))
-	 (when (org-string-nw-p date) (concat "\n    :Date: " date))
-	 "\n")))
+    (cond
+     ((string= title "")
+      (concat
+       (when (org-string-nw-p author) (concat "    :Author: " author "\n"))
+       (when (org-string-nw-p email) (concat "    :Contact: " email "\n"))
+       (when (org-string-nw-p date) (concat "    :Date: " date "\n"))))
+     (t
+      (concat
+       title
+       subtitle
+       (when (org-string-nw-p author) (concat "\n    :Author: " author))
+       (when (org-string-nw-p email) (concat "\n    :Contact: " email))
+       (when (org-string-nw-p date) (concat "\n    :Date: " date))
+       "\n")))))
 
 
 (defun org-rst-template (contents info)
