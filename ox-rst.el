@@ -1112,9 +1112,6 @@ contextual information."
   (setq text (replace-regexp-in-string "^[\s-]*\\.\\. [^\\[]" "\\\\.. " text))
   ;; Protect ^\d+.
   (setq text (replace-regexp-in-string "^\\(\\d\\)+\\." "\\1\\." text))
-  ;; Handle break preservation, if required.
-  (when (plist-get info :preserve-breaks)
-    (setq text (replace-regexp-in-string "^" "| "  text)))
   ;; Return value.
   text)
 
