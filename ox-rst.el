@@ -1080,6 +1080,12 @@ information."
   "Transcode a PARAGRAPH element from Org to reStructuredText.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
+  (when (plist-get _info :preserve-breaks)
+    (let ((lines (split-string contents "\n+[ \t\n]*")))
+      (cond ((> (length lines) 2)
+             (setq contents (apply 'concat (mapcar
+                                            '(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
+                                            lines)))))))
   contents)
 
 
@@ -1106,9 +1112,6 @@ contextual information."
   (setq text (replace-regexp-in-string "^[\s-]*\\.\\. [^\\[]" "\\\\.. " text))
   ;; Protect ^\d+.
   (setq text (replace-regexp-in-string "^\\(\\d\\)+\\." "\\1\\." text))
-  ;; Handle break preservation, if required.
-  (when (plist-get info :preserve-breaks)
-    (setq text (replace-regexp-in-string "^" "| "  text)))
   ;; Return value.
   text)
 
