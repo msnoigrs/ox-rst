@@ -1080,6 +1080,12 @@ information."
   "Transcode a PARAGRAPH element from Org to reStructuredText.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
 the plist used as a communication channel."
+  (when (plist-get _info :preserve-breaks)
+	(let ((lines (split-string contents "\n+[ \t\n]*")))
+	  (cond ((> (length lines) 2)
+			 (setq contents (apply 'concat (mapcar
+											'(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
+											lines)))))))
   contents)
 
 
