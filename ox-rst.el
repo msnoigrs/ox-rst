@@ -92,7 +92,6 @@
 		(?r "As reStructuredText file" org-rst-export-to-rst)))
   :options-alist
   '((:subtitle "SUBTITLE" nil nil parse)
-    (:rst-link-org-as-html nil nil org-rst-link-org-files-as-html)
     (:rst-link-use-abs-url nil "rst-link-use-abs-url" org-rst-link-use-abs-url)
     (:rst-inline-images nil nil org-rst-inline-images)
     (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
