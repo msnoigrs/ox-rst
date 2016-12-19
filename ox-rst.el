@@ -104,7 +104,7 @@
     (:rst-paragraph-spacing nil nil org-rst-paragraph-spacing)
     (:rst-format-drawer-function nil nil org-rst-format-drawer-function)
     (:rst-format-inlinetask-function nil nil org-rst-format-inlinetask-function)
-    (:rst-pygments nil nil org-rst-pygments)
+    (:rst-code-block nil nil org-rst-code-block)
     (:rst-pygments-langs nil nil org-rst-pygments-langs))
   :filters-alist '((:filter-options . org-rst-math-block-options-filter)
                    (:filter-headline . org-rst-filter-headline-blank-lines)
@@ -274,25 +274,24 @@ The function should return the string to be exported."
 
 ;;;; Src blocks
 
-(defcustom org-rst-pygments t
-  "Non-nil means export source code using the pygments package."
+(defcustom org-rst-code-block 'code
+  "The directive used to export SRC-BLOCKs."
   :group 'org-export-rst
   :type '(choice
-	  (const :tag "Use pygments" t)
-	  (const :tag "Export verbatim" nil)))
-
+          (const :tag "Use a code-block directive" code-block)
+          (const :tag "Use a code directive" code)
+          (const :tag "Use a literal block" nil))
+  :safe (lambda (s) (memq s '(code-block code nil)))
+  )
 
 (defcustom org-rst-pygments-langs
-  '((emacs-lisp "scheme") (lisp "scheme") (clojure "clojure")
-    (c "c") (cc "cpp")
-    (fortran "fortran")
-    (perl "perl") (cperl "perl") (python "python") (ruby "ruby")
-    (html "html") (xml "xml")
-    (tex "tex") (latex "latex")
+  '((emacs-lisp "common-lisp") (lisp "common-lisp")
+    (cc "c++")
+    (cperl "perl")
+    (latex "tex")
     (shell-script "bash")
-    (gnuplot "gnuplot")
-    (ocaml "ocaml") (caml "ocaml")
-    (sql "sql") (sqlite "sqlite3"))
+    (caml "ocaml")
+    (sqlite3 "sqlite"))
   "Alist mapping languages to their listing language counterpart.
 The key is a symbol, the major mode symbol without the \"-mode\".
 The value is the string that should be inserted as the language
@@ -1326,37 +1325,44 @@ CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
   (when (org-string-nw-p (org-element-property :value src-block))
     (let* ((lang (org-element-property :language src-block))
-		   (caption (org-element-property :caption src-block))
 		   (label (org-element-property :name src-block))
 		   (value (org-remove-indentation
 				   (org-element-property :value src-block)))
            (num-start (org-export-get-loc src-block info))
-		   (retain-labels (org-element-property :retain-labels src-block))
+           (codeblockd (plist-get info :rst-code-block))
 		   (attributes
 			(org-export-read-attribute :attr_rst src-block))
 		   (class (plist-get attributes :class)))
       (cond
-       ;; Case 1.  No source fontification.
-       ((not org-rst-pygments)
-		(let ()
-		  (concat
-		   "::\n"
-		   (when class (format "    :class: %s\n" class))
-		   (when label (format "    :name: %s\n" label))
-		   "\n"
-		   (org-rst--indent-string value org-rst-quote-margin))))
-	   ;; Case 2. pygments.
-	   (t
+       ;; Case 1.
+       ((eq codeblockd 'code-block)
 		(let ((lst-lang
 			   (or (cadr (assq (intern lang) org-rst-pygments-langs)) lang)))
 		  (concat
 		   (format ".. code-block:: %s\n" lst-lang)
-		   (when num-start (format "    :number-lines: %s\n" num-start))
+		   (when num-start (format "    :lineno-start: %s\n" (1+ num-start)))
 		   (when class (format "    :class: %s\n" class))
 		   (when label (format "    :name: %s\n" label))
 		   "\n"
-		   (org-rst--indent-string value org-rst-quote-margin)
-		  )))))))
+		   (org-rst--indent-string value org-rst-quote-margin))))
+	   ;; Case 2. code.
+	   ((eq codeblockd 'code)
+		(let ((lst-lang
+			   (or (cadr (assq (intern lang) org-rst-pygments-langs)) lang)))
+		  (concat
+		   (format ".. code:: %s\n" lst-lang)
+		   (when num-start (format "    :number-lines: %s\n" (1+ num-start)))
+		   (when class (format "    :class: %s\n" class))
+		   (when label (format "    :name: %s\n" label))
+		   "\n"
+		   (org-rst--indent-string value org-rst-quote-margin))))
+       (t
+        (concat
+         "::\n"
+         (when class (format "    :class: %s\n" class))
+         (when label (format "    :name: %s\n" label))
+         "\n"
+         (org-rst--indent-string value org-rst-quote-margin)))))))
 
 
 ;;;; Statistics Cookie
