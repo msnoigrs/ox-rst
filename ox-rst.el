@@ -1179,9 +1179,9 @@ containing export options.  Modify DATA by side-effect and return it."
               (entity (org-element-property :latex-math-p obj))
               (latex-fragment
                (let ((value (org-element-property :value obj)))
-                 (or (org-string-match-p "\\`\\\\([^\000]*\\\\)\\'" value)
-                     (org-string-match-p "\\`\\$[^\000]*\\$\\'" value)
-                     (org-string-match-p "\\`\\\\\\[[^\000]*\\\\\\]\\'" value))))
+                 (or (string-match-p "\\`\\\\([^\000]*\\\\)\\'" value)
+                     (string-match-p "\\`\\$[^\000]*\\$\\'" value)
+                     (string-match-p "\\`\\\\\\[[^\000]*\\\\\\]\\'" value))))
               ((subscript superscript) t))))))
     (org-element-map data '(entity latex-fragment subscript superscript)
       (lambda (object)
