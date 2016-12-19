@@ -693,11 +693,12 @@ holding contextual information."
             (make-string
              (if org-rst-headline-spacing (car org-rst-headline-spacing)
                (org-element-property :pre-blank headline)) ?\n))
-           (customid (org-element-property :CUSTOM_ID headline))
-           (label (when customid
-                    (format ".. _%s:\n\n" customid))))
+           (id (org-element-property :ID headline))
+           (customid (org-element-property :CUSTOM_ID headline)))
       (concat
-       (or label "")
+       (if customid
+           (format ".. _%s:\n\n" customid)
+         (if id (format ".. _%s:\n\n" id) ""))
        (org-rst--build-title headline info 'underline)
        "\n" pre-blanks
        contents))))
