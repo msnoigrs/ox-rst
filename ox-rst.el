@@ -964,9 +964,9 @@ INFO is a plist holding contextual information."
 		 (desc (and (not (string= desc "")) desc))
 		 (path (cond
 				((member type '("http" "https" "ftp" "mailto"))
-				 (org-link-escape
+				 (url-encode-url
 				  (org-link-unescape
-				   (concat type ":" raw-path)) org-link-escape-chars-browser))
+				   (concat type ":" raw-path))))
 				((string= type "file")
 				 ;; Treat links to ".org" files as ".html", if needed.
 				 (setq raw-path
