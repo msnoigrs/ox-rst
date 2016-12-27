@@ -414,8 +414,7 @@ See `org-rst-text-markup-alist' for details."
      ;; Handle the `verb' special case: Protect some
      ;; special chars and use "\\" escape.
      ((eq 'verb fmt)
-      (let ((start 0)
-	    (rtn "")
+      (let ((rtn "")
 	    char)
 		(while (string-match "\\`*" text)
 		  (setq char (match-string 0 text))
@@ -764,10 +763,7 @@ holding export options."
 	;; 1. Document's body.
 	contents
 	;; 2. Footnote definitions.
-	(let ((definitions (org-export-collect-footnote-definitions info))
-		  ;; Insert full links right inside the footnote definition
-		  ;; as they have no chance to be inserted later.
-		  (org-rst-links-to-notes nil))
+	(let ((definitions (org-export-collect-footnote-definitions info)))
 	  (when definitions
 		(concat
 		 "\n\n"
