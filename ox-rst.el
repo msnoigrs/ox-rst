@@ -31,7 +31,6 @@
 (require 'cl-lib)
 (require 'ox)
 (require 'ox-publish)
-(require 'ox-ascii)
 
 
 ;;; Define Back-End
