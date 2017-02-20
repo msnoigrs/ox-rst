@@ -401,10 +401,10 @@ possible.  It doesn't apply to `inlinetask' elements."
 					  (make-string (string-width first-part) under-char))))))))
 
 
-(defun org-rst--text-markup (text markup)
+(defun org-rst--text-markup (text markup info)
   "Format TEXT depending on MARKUP text markup.
 See `org-rst-text-markup-alist' for details."
-  (let ((fmt (cdr (assq markup org-rst-text-markup-alist)))
+  (let ((fmt (cdr (assq markup (plist-get info :rst-text-markup-alist))))
         (text (replace-regexp-in-string "[ \t\n]+" " " text)))
     (cond
      ;; No format string: Return raw text.
@@ -515,11 +515,11 @@ holding export options."
 
 ;;;; Bold
 
-(defun org-rst-bold (_bold contents _info)
+(defun org-rst-bold (_bold contents info)
   "Transcode BOLD from Org to reStructuredText.
 CONTENTS is the text with bold markup.  INFO is a plist holding
 contextual information."
-  (org-rst--text-markup contents 'bold))
+  (org-rst--text-markup contents 'bold info))
 
 
 ;;;; Center Block
@@ -551,11 +551,11 @@ information."
 
 ;;;; Code
 
-(defun org-rst-code (code _contents _info)
+(defun org-rst-code (code _contents info)
   "Transcode a CODE object from Org to reStructuredText.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  (org-rst--text-markup (org-element-property :value code) 'code))
+  (org-rst--text-markup (org-element-property :value code) 'code info))
 
 
 ;;;; Drawer
@@ -689,12 +689,12 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 
 ;;;; Inline Src Block
 
-(defun org-rst-inline-src-block (inline-src-block _contents _info)
+(defun org-rst-inline-src-block (inline-src-block _contents info)
   "Transcode an INLINE-SRC-BLOCK element from Org to reStructuredText.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
   (org-rst--text-markup
-   (org-element-property :value inline-src-block) 'verbatim))
+   (org-element-property :value inline-src-block) 'verbatim info))
 
 
 ;;;; Inlinetask
@@ -771,11 +771,11 @@ holding export options."
 
 ;;;; Italic
 
-(defun org-rst-italic (_italic contents _info)
+(defun org-rst-italic (_italic contents info)
   "Transcode ITALIC from Org to reStructuredText.
 CONTENTS is the text with italic markup.  INFO is a plist holding
 contextual information."
-  (org-rst--text-markup contents 'italic))
+  (org-rst--text-markup contents 'italic info))
 
 
 ;;;; Item
@@ -1505,11 +1505,11 @@ holding contextual information."
 
 ;;;; Verbatim
 
-(defun org-rst-verbatim (verbatim _contents _info)
+(defun org-rst-verbatim (verbatim _contents info)
   "Transcode a VERBATIM object from Org to reStructredText.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  (org-rst--text-markup (org-element-property :value verbatim) 'verbatim))
+  (org-rst--text-markup (org-element-property :value verbatim) 'verbatim info))
 
 
 ;;;; Verse Block
