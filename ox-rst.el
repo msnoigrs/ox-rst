@@ -179,12 +179,11 @@ link's path."
 (defcustom org-rst-text-markup-alist '((bold . "**%s**")
 									   (code . verb)
 									   (italic . "*%s*")
-									   (verbatim . verb)
-									   (comment . ".. %s\n"))
+									   (verbatim . verb))
   "Alist of reStructredText expressions to convert text markup.
 
 The key must be a symbol among `bold', `code', `italic',
-`comment' and `verbatim'.  The value is a formatting string to
+`verbatim'.  The value is a formatting string to
 wrap fontified text with.
 
 Value can also be set to the following symbols: `verb'.
@@ -193,7 +192,7 @@ If no association can be found for a given markup, text will be
 returned as-is."
   :group 'org-export-rst
   :type 'alist
-  :options '(bold code italic verbatim comment))
+  :options '(bold code italic verbatim))
 
 
 (defcustom org-rst-quote-margin 4
@@ -557,26 +556,6 @@ information."
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
   (org-rst--text-markup (org-element-property :value code) 'code))
-
-
-;;; Comment
-(defun org-rst-comment (comment _contents _info)
-  "Transcode a COMMENT object from Org to reStructuredText.
-CONTENTS is the text in the comment.  INFO is a plist holding
-contextual information."
-  (org-rst--text-markup (org-element-property :value comment) 'comment))
-
-
-;;; Comment Block
-
-(defun org-rst-comment-block (comment-block _contents _info)
-  "Transcode a COMMENT-BLOCK object from Org to reStructuredText.
-CONTENTS is the text within the block.  INFO is a plist holding
-contextual information."
-  (let ((value (org-remove-indentation
-				(org-element-property :value comment-block))))
-    (when value
-	  (concat "..\n" (org-rst--indent-string value org-rst-quote-margin)))))
 
 
 ;;;; Drawer
