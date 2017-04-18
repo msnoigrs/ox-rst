@@ -314,13 +314,6 @@ Empty lines are not indented."
      "\\(^\\)\\(?:.*\\S-\\)" (make-string width ? ) s nil nil 1)))
 
 
-(defun org-rst--has-caption-p (element _info)
-  "Non-nil when ELEMENT has a caption affiliated keyword.
-INFO is a plist used as a communication channel.  This function
-is meant to be used as a predicate for `org-export-get-ordinal'."
-  (org-element-property :caption element))
-
-
 (defun org-rst--make-attribute-string (attributes)
   "Return a list of attributes, as a string.
 ATTRIBUTES is a plist where values are either strings or nil. An
