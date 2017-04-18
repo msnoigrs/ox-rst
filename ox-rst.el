@@ -734,7 +734,7 @@ holding export options."
 	;; 1. Document's body.
 	contents
 	;; 2. Footnote definitions.
-	(let ((definitions (org-export-collect-footnote-definitions contents info)))
+	(let ((definitions (org-export-collect-footnote-definitions info)))
 	  (when definitions
 		(concat
 		 "\n\n"
