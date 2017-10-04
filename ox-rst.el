@@ -1085,7 +1085,7 @@ contextual information."
   ;; Protect ..
   (setq text (replace-regexp-in-string "^[\s-]*\\.\\. [^\\[]" "\\\\.. " text))
   ;; Protect ^\d+.
-  (setq text (replace-regexp-in-string "^\\(\\d\\)+\\." "\\1\\." text))
+  (setq text (replace-regexp-in-string "^\\([[:digit:]]\\)+\\." "\\1\\." text))
   ;; Return value.
   text)
 
