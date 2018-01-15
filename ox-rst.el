@@ -740,25 +740,16 @@ holding export options."
 		 "\n\n"
 		 (mapconcat
 		  (lambda (ref)
-			(let ((id (format ".. [%s] " (car ref))))
-			  ;; Distinguish between inline definitions and
-			  ;; full-fledged definitions.
-			  (org-trim
-			   (let ((def (nth 2 ref)))
-				 (if (eq (org-element-type def) 'org-data)
-					 ;; Full-fledged definition: footnote ID is
-					 ;; inserted inside the first parsed paragraph
-					 ;; (FIRST), if any, to be sure filling will
-					 ;; take it into consideration.
-					 (let ((first (car (org-element-contents def))))
-					   (if (not (eq (org-element-type first) 'paragraph))
-						   (concat id "\n" (org-export-data def info))
-						 (push id (nthcdr 2 first))
-						 (org-export-data def info)))
-				   ;; Fill paragraph once footnote ID is inserted
-				   ;; in order to have a correct length for first
-				   ;; line.
-				   (concat id (org-export-data def info)))))))
+			(let* ((id (format ".. [%s] " (car ref)))
+                   (def (nth 2 ref))
+                   (lines (split-string (org-export-data def info) "\n+[ \t\n]*"))
+                   (fntext (concat (car lines) "\n"
+                                   (apply 'concat (mapcar
+                                                   '(lambda (x) (if (> (length x) 0)
+                                                                    (concat (org-rst--indent-string x org-rst-quote-margin) "\n")))
+                                                 (cdr lines)))))
+                   )
+               (concat id fntext)))
 		  definitions "\n\n")))))))
 
 
