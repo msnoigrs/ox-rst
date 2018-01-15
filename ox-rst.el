@@ -750,7 +750,7 @@ holding export options."
                                                  (cdr lines)))))
                    )
                (concat id fntext)))
-		  definitions "\n\n")))))))
+		  definitions "\n")))))))
 
 
 ;;;; Italic
