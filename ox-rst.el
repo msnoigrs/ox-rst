@@ -811,8 +811,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (let ((key (org-element-property :key keyword))
 	(value (org-element-property :value keyword)))
     (cond
-     ((string= key "RST") value)
-     ((string= key "TOC") (downcase value)))))
+     ((string= key "RST") value))))
 
 
 ;;;; Latex Environment
