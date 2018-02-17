@@ -1501,11 +1501,11 @@ channel."
   "Transcode a VERSE-BLOCK element from Org to reStructuredText.
 CONTENTS is verse block contents.  INFO is a plist holding
 contextual information."
-  (concat
-   (replace-regexp-in-string "^" "| " (if (> (string-width contents) 1)
-                                          (substring contents 0 -1)
-                                        contents)) "\n"))
-
+  (let ((lines (split-string contents "\n")))
+    (cond ((> (length lines) 0)
+           (mapconcat
+            (function (lambda (x) (if (> (string-width x) 0)
+                                      (concat "| " x "\n") ""))) lines "")))))
 
 
 ;;; Filters
