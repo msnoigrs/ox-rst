@@ -1074,6 +1074,8 @@ contextual information."
   (setq text (replace-regexp-in-string "[`*_\\]" "\\\\\\&" text))
   ;; Protect ..
   (setq text (replace-regexp-in-string "^[\s-]*\\.\\. [^\\[]" "\\\\\\&" text))
+  ;; Protect ::
+  (setq text (replace-regexp-in-string "::" "\\\\:\\\\:" text))
   ;; Return value.
   text)
 
