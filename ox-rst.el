@@ -1183,7 +1183,7 @@ containing export options.  Modify DATA by side-effect and return it."
 	       (org-rst--wrap-latex-math-block (plist-get info prop) info))))
 
 (defun org-rst-math-block (_math-block contents _info)
-  "Transcode a MATH-BLOCK object from Org to LaTeX.
+  "Transcode a MATH-BLOCK object from Org to reStructuredText.
 CONTENTS is a string.  INFO is a plist used as a communication
 channel."
   (let* ((value (org-trim contents))
