@@ -99,6 +99,7 @@
     (:rst-link-use-ref-role nil nil org-rst-link-use-ref-role)
     (:rst-text-markup-alist nil nil org-rst-text-markup-alist)
     (:rst-quote-margin nil nil org-rst-quote-margin)
+    (:rst-headline-underline-characters nil nil org-rst-headline-underline-characters)
     (:rst-headline-spacing nil nil org-rst-headline-spacing)
     (:rst-paragraph-spacing nil nil org-rst-paragraph-spacing)
     (:rst-format-drawer-function nil nil org-rst-format-drawer-function)
@@ -230,6 +231,11 @@ the same number of blank lines as in the original document."
 	  (integer :tag "Number of blank lines")
 	  (const :tag "Preserve original spacing" auto)))
 
+
+(defcustom org-rst-headline-underline-characters '(?- ?~ ?^ ?: ?' ?\ ?_)
+  "List of underline characters for each headline level."
+  :group 'org-export-rst
+  :type 'list)
 
 ;;;; Drawers
 
@@ -388,7 +394,7 @@ possible.  It doesn't apply to `inlinetask' elements."
      (when (and underline headlinep)
        (let ((under-char
 			  (nth (1- (org-export-get-relative-level element info))
-				   '(?- ?~ ?^ ?: ?' ?\ ?_))))
+				   org-rst-headline-underline-characters)))
 		 (and under-char
 			  (concat "\n"
 					  (make-string (string-width first-part) under-char))))))))
