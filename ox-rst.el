@@ -312,6 +312,24 @@ in this list - but it does not hurt if it is present."
 
 ;;; Internal Functions
 
+(defun org-rst--justify-lines (s text-width how)
+  "Justify all lines in string S.
+TEXT-WIDTH is an integer specifying maximum length of a line.
+HOW determines the type of justification: it can be `left',
+`right', `full' or `center'."
+  (with-temp-buffer
+    (insert s)
+    (goto-char (point-min))
+    (let ((fill-column text-width)
+	  ;; Disable `adaptive-fill-mode' so it doesn't prevent
+	  ;; filling lines matching `adaptive-fill-regexp'.
+	  (adaptive-fill-mode nil))
+      (while (< (point) (point-max))
+	(justify-current-line how)
+	(forward-line)))
+    (buffer-string)))
+
+
 (defun org-rst--indent-string (s width)
   "Indent string S by WIDTH white spaces.
 Empty lines are not indented."
@@ -1397,16 +1415,58 @@ contextual information."
 
 ;;;; Table Cell
 
+(defun org-rst--table-cell-width (table-cell info)
+  "Return width of TABLE-CELL.
+
+INFO is a plist used as a communication channel.
+
+Width of a cell is determined either by a width cookie in the
+same column as the cell, or by the maximum cell's length in that
+column."
+  (let* ((row (org-export-get-parent table-cell))
+	 (table (org-export-get-parent row))
+	 (col (let ((cells (org-element-contents row)))
+		(- (length cells) (length (memq table-cell cells)))))
+	 (cache
+	  (or (plist-get info :rst-table-cell-width-cache)
+	      (plist-get (setq info
+			       (plist-put info :rst-table-cell-width-cache
+					  (make-hash-table :test 'equal)))
+			 :rst-table-cell-width-cache)))
+	 (key (cons table col)))
+    (or (gethash key cache)
+	(puthash
+	 key
+	 (let ((cookie-width (org-export-table-cell-width table-cell info)))
+	   (or cookie-width
+	       (let ((contents-width
+		      (let ((max-width 0))
+			(org-element-map table 'table-row
+			  (lambda (row)
+			    (setq max-width
+				  (max (string-width
+					(org-export-data
+					 (org-element-contents
+					  (elt (org-element-contents row) col))
+					 info))
+				       max-width)))
+			  info)
+			max-width)))
+		 (cond ((not cookie-width) contents-width)
+		       (t cookie-width)))))
+	 cache))))
+
+
 (defun org-rst-table-cell (table-cell contents info)
   "Transcode a TABLE-CELL object from Org to reStructuredText.
 CONTENTS is the cell contents.  INFO is a plist used as
 a communication channel."
-  (let ((width (org-ascii--table-cell-width table-cell info)))
+  (let ((width (org-rst--table-cell-width table-cell info)))
     ;; Align contents correctly within the cell.
     (let* ((indent-tabs-mode nil)
 	   (data
 	    (if contents
-	      (org-ascii--justify-lines
+	      (org-rst--justify-lines
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)) "\\")))
       (setq contents (concat data
