@@ -441,7 +441,7 @@ See `org-rst-text-markup-alist' for details."
 	    char)
 		(while (string-match "\\`*" text)
 		  (setq char (match-string 0 text))
-		  (if (> (match-beginning 0) 0)
+		  (when (> (match-beginning 0) 0)
 			  (setq rtn (concat rtn (substring text 0 (match-beginning 0)))))
 		  (setq text (substring text (1+ (match-beginning 0))))
 		  (setq char (concat "\\" char)
