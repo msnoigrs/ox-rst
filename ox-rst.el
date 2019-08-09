@@ -94,9 +94,10 @@
     (:rst-link-use-abs-url nil "rst-link-use-abs-url" org-rst-link-use-abs-url)
     (:rst-inline-images nil nil org-rst-inline-images)
     (:rst-inline-image-rules nil nil org-rst-inline-image-rules)
-    (:rst-link-org-files-as-html nil nil org-rst-link-org-files-as-html)
+    (:rst-link-org-files-as-rst nil nil org-rst-link-org-files-as-rst)
     (:rst-link-home "RST_LINK_HOME" nil org-rst-link-home)
     (:rst-link-use-ref-role nil nil org-rst-link-use-ref-role)
+    (:rst-extension nil nil org-rst-extension)
     (:rst-text-markup-alist nil nil org-rst-text-markup-alist)
     (:rst-quote-margin nil nil org-rst-quote-margin)
     (:rst-headline-underline-characters nil nil org-rst-headline-underline-characters)
@@ -126,21 +127,28 @@
   :group 'org-export)
 
 
-(defcustom org-rst-link-org-files-as-html t
-  "Non-nil means make file links to `file.org' point to `file.html'.
-When `org-mode' is exporting an `org-mode' file to HTML, links to
-non-html files are directly put into a href tag in HTML.
+(defcustom org-rst-extension "rst"
+  "The extension for exported reStructuredText files."
+  :group 'org-export-rst
+  :type 'string)
+
+
+(defcustom org-rst-link-org-files-as-rst t
+  "Non-nil means make file links to `file.org' point to `file.rst'.
+When `org-mode' is exporting an `org-mode' file to reStructuredText,
+links to non-rst files are directly put into a href tag in
+reStructuredText.
 However, links to other Org mode files (recognized by the extension
-`.org.) should become links to the corresponding HTML
+`.org.) should become links to the corresponding reStructuredText
 file, assuming that the linked `org-mode' file will also be
-converted to HTML.
+converted to reStructuredText.
 When nil, the links still point to the plain \".org\" file."
   :group 'org-export-rst
   :type 'boolean)
 
 
 (defcustom org-rst-link-home ""
-  "Where should the \"HOME\" link of exported HTML pages lead?"
+  "Where should the \"HOME\" link of exported rst files lead?"
   :group 'org-export-rst
   :type '(string :tag "File or URL"))
 
@@ -924,20 +932,20 @@ if its description is a single link targeting an image file."
 
 DESC is the description part of the link, or the empty string.
 INFO is a plist holding contextual information."
-  (let* ((home (when (plist-get info :html-link-home)
-				 (org-trim (plist-get info :html-link-home))))
-		 (use-abs-url (plist-get info :html-link-use-abs-url))
-		 (link-org-files-as-html-maybe
+  (let* ((home (when (plist-get info :rst-link-home)
+				 (org-trim (plist-get info :rst-link-home))))
+		 (use-abs-url (plist-get info :rst-link-use-abs-url))
+		 (link-org-files-as-rst-maybe
 		  (function
 		   (lambda (raw-path info)
-			 "Treat links to `file.org' as links to `file.html', if needed.
-           See `org-rst-link-org-files-as-html'."
+			 "Treat links to `file.org' as links to `file.rst', if needed.
+           See `org-rst-link-org-files-as-rst'."
 			 (cond
-			  ((and (plist-get info :rst-link-org-files-as-html)
+			  ((and (plist-get info :rst-link-org-files-as-rst)
 					(string= ".org"
 							 (downcase (file-name-extension raw-path "."))))
 			   (concat (file-name-sans-extension raw-path) "."
-					   (plist-get info :html-extension)))
+					   (plist-get info :rst-extension)))
 			  (t raw-path)))))
 		 (type (org-element-property :type link))
 		 (raw-path (org-element-property :path link))
@@ -949,9 +957,9 @@ INFO is a plist holding contextual information."
 				  (org-link-unescape
 				   (concat type ":" raw-path))))
 				((string= type "file")
-				 ;; Treat links to ".org" files as ".html", if needed.
+				 ;; Treat links to ".org" files as ".rst", if needed.
 				 (setq raw-path
-					   (funcall link-org-files-as-html-maybe raw-path info))
+					   (funcall link-org-files-as-rst-maybe raw-path info))
 				 (cond ((and home use-abs-url)
 						(setq raw-path
 							  (concat (file-name-as-directory home) raw-path)))
@@ -1690,8 +1698,11 @@ contents of hidden elements.
 
 Return output file's name."
   (interactive)
-  (let ((outfile (org-export-output-file-name ".rst" subtreep)))
-    (org-export-to-file 'rst outfile
+  (let* ((extension (concat "." (or (plist-get ext-plist :rst-extension)
+                                    org-rst-extension
+                                    "rst")))
+         (file (org-export-output-file-name extension subtreep)))
+    (org-export-to-file 'rst file
       async subtreep visible-only body-only ext-plist)))
 
 ;;;###autoload
