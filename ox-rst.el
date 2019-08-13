@@ -18,9 +18,9 @@
 
 ;; Author: Masanao Igarashi <syoux2@gmail.com>
 ;; Keywords: org, rst, reST, reStructuredText
-;; Version: 0.2
-;; URL: https://github.com/masayuko/ox-rst
-;; Package-Requires: ((emacs "24.4") (org "8.2.4"))
+;; Version: 0.3
+;; URL: https://github.com/msnoigrs/ox-rst
+;; Package-Requires: ((emacs "26.1") (org "8.3"))
 
 ;;; Commentary:
 ;; This library implements an reStructuredText back-end for
