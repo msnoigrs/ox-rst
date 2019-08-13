@@ -953,8 +953,7 @@ INFO is a plist holding contextual information."
 		 (path (cond
 				((member type '("http" "https" "ftp" "mailto"))
 				 (url-encode-url
-				  (org-link-unescape
-				   (concat type ":" raw-path))))
+				   (concat type ":" raw-path)))
 				((string= type "file")
 				 ;; Treat links to ".org" files as ".rst", if needed.
 				 (setq raw-path
