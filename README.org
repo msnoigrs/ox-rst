@@ -1,7 +1,7 @@
 #+TITLE: reStructuredText Back-End for Org Export Engine
-#+AUTHOR: IGARASHI Masanao
+#+AUTHOR: Masanao Igarashi
 #+EMAIL: syoux2@gmail.com
-#+DATE: 2016/06/04 00:00
+#+DATE: 2019/08/13 00:00
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE: en
@@ -48,7 +48,7 @@
   ,#+TITLE: This is the title of the document
   ,#+AUTHOR: Author
   ,#+EMAIL: mailaddress@example.com
-  ,#+DATE: 2013/12/31 00:00
+  ,#+DATE: 2019/08/13 00:00
   ,#+OPTIONS: author:t date:t email:t
 #+END_EXAMPLE
 
@@ -60,7 +60,7 @@
 
       :Author: Author
       :Contact: mailaddress@example.com
-      :Date: 2013/12/31 00:00
+      :Date: 2019/08/13 00:00
 #+END_SRC
 
 ** Headings
