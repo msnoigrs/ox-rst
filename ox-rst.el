@@ -972,13 +972,13 @@ INFO is a plist holding contextual information."
 		   (let* ((parent (org-export-get-parent-element link))
 				  (link (let ((container (org-export-get-parent link)))
 						  (if (and (eq 'link (org-element-type container))
-								   (org-html-inline-image-p link info))
+								   (org-rst-inline-image-p link info))
 							  container
 							link))))
 			 (and (eq link (org-element-map parent 'link #'identity info t))
-				  (org-export-read-attribute :attr_ parent)))
+				  (org-export-read-attribute :attr_rst parent)))
 		   ;; Also add attributes from link itself.	 Currently, those
-		   ;; need to be added programmatically before `org-html-link'
+		   ;; need to be added programmatically before `org-rst-link'
 		   ;; is invoked, for example, by backends building upon HTML
 		   ;; export.
 		   (org-export-read-attribute :attr_rst link)))
