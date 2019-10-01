@@ -20,7 +20,7 @@
 ;; Keywords: org, rst, reST, reStructuredText
 ;; Version: 0.3
 ;; URL: https://github.com/msnoigrs/ox-rst
-;; Package-Requires: ((emacs "26.1") (org "8.3"))
+;; Package-Requires: ((emacs "25.1") (org "8.3"))
 
 ;;; Commentary:
 ;; This library implements an reStructuredText back-end for
