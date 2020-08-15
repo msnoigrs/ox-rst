@@ -169,10 +169,10 @@ When nil, an anchor with reference is used to link to the image."
   :type 'boolean)
 
 (defcustom org-rst-inline-image-rules
-  '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("attachment" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("http" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("https" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|svg\\|svgz\\|swf\\)\\'"))
+  '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("attachment" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("http" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
+    ("https" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'"))
   "Rules characterizing image files that can be inlined into reStructuredText.
 A rule consists in an association whose key is the type of link
 to consider, and value is a regexp that will be matched against
