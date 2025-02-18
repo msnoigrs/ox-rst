@@ -994,7 +994,7 @@ INFO is a plist holding contextual information."
 			(if (org-string-nw-p attr) (concat "\n" attr "\n") ""))))
     (cond
      ;; Link type is handled by a special function.
-     ((org-export-custom-protocol-maybe link desc 'rst))
+     ((org-export-custom-protocol-maybe link desc 'rst info))
      ;; Image file.
      ((and (plist-get info :rst-inline-images)
            (org-export-inline-image-p
