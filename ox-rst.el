@@ -808,7 +808,7 @@ contextual information."
 CONTENTS is the item contents.  INFO is a plist used as
 a communication channel."
   (let* ((checkbox (org-rst--checkbox item info))
-		 (list-type (org-element-property :type (org-export-get-parent item)))
+		 (list-type (org-element-property :type (org-element-parent item)))
 		 (tag (let
 				  ((tag (org-element-property :tag item)))
 				(and tag (concat (org-export-data tag info) checkbox))))
@@ -979,7 +979,7 @@ INFO is a plist holding contextual information."
 		   ;; for inline images).  This is needed as long as
 		   ;; attributes cannot be set on a per link basis.
 		   (let* ((parent (org-export-get-parent-element link))
-				  (link (let ((container (org-export-get-parent link)))
+				  (link (let ((container (org-element-parent link)))
 						  (if (and (org-element-type-p container 'link)
 								   (org-rst-inline-image-p link info))
 							  container
@@ -1451,8 +1451,8 @@ INFO is a plist used as a communication channel.
 Width of a cell is determined either by a width cookie in the
 same column as the cell, or by the maximum cell's length in that
 column."
-  (let* ((row (org-export-get-parent table-cell))
-	 (table (org-export-get-parent row))
+  (let* ((row (org-element-parent table-cell))
+	 (table (org-element-parent row))
 	 (col (let ((cells (org-element-contents row)))
 		(- (length cells) (length (memq table-cell cells)))))
 	 (cache
