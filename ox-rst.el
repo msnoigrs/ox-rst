@@ -1521,7 +1521,7 @@ a communication channel."
                  ((not (= 1 rowgroup-number))
                   ?-)
                  ((org-export-table-has-header-p
-                   (org-export-get-parent-table table-row) info)
+                   (org-element-lineage table-row 'table) info)
                   ?=)
                  (t ?-)))
                (makeline
