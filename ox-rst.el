@@ -978,7 +978,7 @@ INFO is a plist holding contextual information."
 		   ;; do this for the first link in parent (inner image link
 		   ;; for inline images).  This is needed as long as
 		   ;; attributes cannot be set on a per link basis.
-		   (let* ((parent (org-export-get-parent-element link))
+		   (let* ((parent (org-element-parent-element link))
 				  (link (let ((container (org-element-parent link)))
 						  (if (and (org-element-type-p container 'link)
 								   (org-rst-inline-image-p link info))
@@ -1004,9 +1004,9 @@ INFO is a plist holding contextual information."
 	  (let* ((ipath (if (not (file-name-absolute-p raw-path)) raw-path
 					 (expand-file-name raw-path)))
              (caption (org-export-get-caption
-					  (org-export-get-parent-element link)))
+					  (org-element-parent-element link)))
              (linkname
-              (org-element-property :name (org-export-get-parent-element link)))
+              (org-element-property :name (org-element-parent-element link)))
              (label (if linkname (format ".. _%s:\n\n" linkname) "")))
 		(if caption (format "%s.. figure:: %s%s\n\n    %s\n"
                             label ipath attributes
