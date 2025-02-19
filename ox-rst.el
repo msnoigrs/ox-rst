@@ -385,7 +385,7 @@ the title.
 
 When optional argument TOC is non-nil, use optional title if
 possible.  It doesn't apply to `inlinetask' elements."
-  (let* ((headlinep (eq (org-element-type element) 'headline))
+  (let* ((headlinep (org-element-type-p element 'headline))
 		 (numbers
 		  ;; Numbering is specific to headlines.
 		  (and headlinep (org-export-numbered-headline-p element info)
@@ -837,7 +837,7 @@ a communication channel."
      (if tag tag (concat bullet checkbox))
      (let ((contents (org-rst--indent-string contents width)))
        (if (and (not tag)
-				(eq (org-element-type (car (org-element-contents item))) 'paragraph))
+				(org-element-type-p (car (org-element-contents item)) 'paragraph))
 		   (org-trim contents)
 		 (concat "\n" contents))))))
 
@@ -980,7 +980,7 @@ INFO is a plist holding contextual information."
 		   ;; attributes cannot be set on a per link basis.
 		   (let* ((parent (org-export-get-parent-element link))
 				  (link (let ((container (org-export-get-parent link)))
-						  (if (and (eq 'link (org-element-type container))
+						  (if (and (org-element-type-p container 'link)
 								   (org-rst-inline-image-p link info))
 							  container
 							link))))
@@ -1195,9 +1195,9 @@ containing export options.  Modify DATA by side-effect and return it."
     (org-element-map data '(entity latex-fragment subscript superscript)
       (lambda (object)
         ;; Skip objects already wrapped.
-        (when (and (not (eq (org-element-type
-                             (org-element-property :parent object))
-                            'latex-math-block))
+        (when (and (not (org-element-type-p
+                         (org-element-property :parent object)
+                         'latex-math-block))
                    (funcall valid-object-p object))
           (let ((math-block (list 'latex-math-block nil))
                 (next-elements (org-export-get-next-element object info t))
@@ -1613,8 +1613,8 @@ back-end used.  INFO is a plist used as a communication channel.
 Assume BACKEND is `rst'."
   (org-element-map tree org-element-all-elements
     (lambda (elem)
-      (unless (or (eq (org-element-type elem) 'org-data)
-				  (eq (org-element-type elem) 'table-row))
+      (unless (or (org-element-type-p elem 'org-data)
+				  (org-element-type-p elem 'table-row))
 		(org-element-put-property
 		 elem :post-blank
 		 (let ((post-blank (org-element-property :post-blank elem)))
@@ -1646,7 +1646,7 @@ See `org-rst-paragraph-spacing' for information."
   (when (wholenump org-rst-paragraph-spacing)
     (org-element-map tree 'paragraph
       (lambda (p)
-		(when (eq (org-element-type (org-export-get-next-element p info))
+		(when (org-element-type-p (org-export-get-next-element p info)
 				  'paragraph)
 		  (org-element-put-property
 		   p :post-blank org-rst-paragraph-spacing)))))
