@@ -1694,6 +1694,7 @@ to convert it."
   (interactive)
   (org-export-replace-region-by 'rst))
 
+(defalias 'org-export-region-to-rst #'org-rst-convert-region-to-rst)
 
 ;;;###autoload
 (defun org-rst-export-to-rst
