@@ -1204,14 +1204,14 @@ containing export options.  Modify DATA by side-effect and return it."
                 (last object))
             ;; Wrap MATH-BLOCK around OBJECT in DATA.
             (org-element-insert-before math-block object)
-            (org-element-extract-element object)
+            (org-element-extract object)
             (org-element-adopt-elements math-block object)
             (when (zerop (or (org-element-property :post-blank object) 0))
               ;; MATH-BLOCK swallows consecutive math objects.
               (catch 'exit
                 (dolist (next next-elements)
                   (if (not (funcall valid-object-p next)) (throw 'exit nil)
-                    (org-element-extract-element next)
+                    (org-element-extract next)
                     (org-element-adopt-elements math-block next)
                     ;; Eschew the case: \beta$x$ -> \(\betax\).
                     (unless (memq (org-element-type next)
