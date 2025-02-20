@@ -960,9 +960,6 @@ INFO is a plist holding contextual information."
 		 ;; Ensure DESC really exists, or set it to nil.
 		 (desc (and (not (string= desc "")) desc))
 		 (path (cond
-				((member type '("http" "https" "ftp" "mailto"))
-				 (url-encode-url
-				   (concat type ":" raw-path)))
 				((string= type "file")
 				 ;; Treat links to ".org" files as ".rst", if needed.
 				 (setq raw-path
@@ -971,7 +968,7 @@ INFO is a plist holding contextual information."
 						(setq raw-path
 							  (concat (file-name-as-directory home) raw-path)))
                        (t raw-path)))
-				(t raw-path)))
+				(t (concat type ":" raw-path))))
 		 (attributes-plist
 		  (org-combine-plists
 		   ;; Extract attributes from parent's paragraph.  HACK: Only
