@@ -1,6 +1,6 @@
 ;;; ox-rst.el --- Export reStructuredText using org-mode. -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2019  Masanao Igarashi
+;; Copyright (C) 2015-2025  Masanao Igarashi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -13,12 +13,11 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;; Author: Masanao Igarashi <syoux2@gmail.com>
 ;; Keywords: org, rst, reST, reStructuredText
-;; Version: 0.3
+;; Version: 0.4
 ;; URL: https://github.com/msnoigrs/ox-rst
 ;; Package-Requires: ((emacs "25.1") (org "8.3"))
 
