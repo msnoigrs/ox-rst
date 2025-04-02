@@ -1048,8 +1048,8 @@ INFO is a plist holding contextual information."
                (format "`%s`_" (org-rst--build-title destination info nil))))
           ;; Fuzzy link points to a target.
 		  (otherwise
-           (if (not desc) (format "`%s`_" path)
-             (format "`%s <%s>`_" desc path))))))
+           (if (not desc) (format "`%s`_" raw-path)
+             (format "`%s <%s>`_" desc raw-path))))))
      ;; Coderef: replace link with the reference name or the
      ;; equivalent line number. It is not supported in ReST.
      ((string= type "coderef")
