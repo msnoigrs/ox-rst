@@ -569,9 +569,7 @@ holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   (concat org-clock-string " "
-		  (org-translate-time
-		   (org-element-property :raw-value
-								 (org-element-property :value clock)))
+		  (org-timestamp-translate (org-element-property :value clock))
 		  (let ((time (org-element-property :duration clock)))
 			(and time
 				 (concat " => "
