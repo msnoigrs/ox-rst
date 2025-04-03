@@ -254,7 +254,7 @@ the same number of blank lines as in the original document."
 
 ;;;; Drawers
 
-(defcustom org-rst-format-drawer-function nil
+(defcustom org-rst-format-drawer-function (lambda (_name contents) contents)
   "Function called to format a drawer in reStructuredText code.
 
 The function must accept two parameters:
@@ -589,18 +589,13 @@ channel."
 
 ;;;; Drawer
 
-(defun org-rst-drawer (drawer contents _info)
+(defun org-rst-drawer (drawer contents info)
   "Transcode a DRAWER element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
-  (let* ((name (org-element-property :drawer-name drawer))
-	 (output (if (functionp org-rst-format-drawer-function)
-		     (funcall org-rst-format-drawer-function
-			      name contents)
-		   ;; If there's no user defined function: simply
-		   ;; display contents of the drawer.
-		   contents)))
-    output))
+  (funcall (plist-get info :rst-format-drawer-function)
+	   (org-element-property :drawer-name drawer)
+	   contents))
 
 
 ;;;; Dynamic Block
