@@ -112,10 +112,9 @@
     (:rst-pygments-langs nil nil org-rst-pygments-langs))
   :filters-alist '((:filter-options . org-rst-math-block-options-filter)
                    (:filter-headline . org-rst-filter-headline-blank-lines)
-				   (:filter-parse-tree org-rst-math-block-tree-filter
-                                       org-rst-separate-elements
-									   org-rst-filter-paragraph-spacing)
-				   (:filter-section . org-rst-filter-headline-blank-lines)))
+				   (:filter-parse-tree . (org-rst-math-block-tree-filter
+                                          org-rst-separate-elements
+									      org-rst-filter-paragraph-spacing))))
 
 
 ;;; Internal Variables
