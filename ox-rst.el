@@ -1130,20 +1130,17 @@ channel."
    'identity
    (delq nil
 	 (list (let ((closed (org-element-property :closed planning)))
-		 (when closed
-		   (concat org-closed-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value closed)))))
+		     (when closed
+		       (concat org-closed-string " "
+			           (org-timestamp-translate closed))))
 	       (let ((deadline (org-element-property :deadline planning)))
-		 (when deadline
-		   (concat org-deadline-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value deadline)))))
+		     (when deadline
+		       (concat org-deadline-string " "
+			           (org-timestamp-translate deadline))))
 	       (let ((scheduled (org-element-property :scheduled planning)))
-		 (when scheduled
-		   (concat org-scheduled-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value scheduled)))))))
+		     (when scheduled
+		       (concat org-scheduled-string " "
+			           (org-timestamp-translate scheduled))))))
    " "))
 
 
