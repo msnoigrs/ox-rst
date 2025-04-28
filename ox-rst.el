@@ -1482,8 +1482,9 @@ a communication channel."
 	      (org-rst--justify-lines
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)) "\\")))
-      (setq contents (concat data
-                             (make-string (- width (string-width data)) ? ))))
+      (setq contents
+            (concat data
+                    (make-string (max 0 (- width (string-width data))) ? ))))
     ;; Return cell.
     (concat (format " %s " contents)
 			(when (org-export-get-next-element table-cell info) "|"))))
