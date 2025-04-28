@@ -249,7 +249,7 @@ the same number of blank lines as in the original document."
 (defcustom org-rst-headline-underline-characters '(?- ?~ ?^ ?: ?' ?\ ?_)
   "List of underline characters for each headline level."
   :group 'org-export-rst
-  :type 'list)
+  :type '(repeat character))
 
 ;;;; Drawers
 
@@ -354,7 +354,7 @@ Empty lines are not indented."
 
 (defun org-rst--make-attribute-string (attributes)
   "Return a list of attributes, as a string.
-ATTRIBUTES is a plist where values are either strings or nil. An
+ATTRIBUTES is a plist where values are either strings or nil.  An
 attributes with a nil value will be omitted from the result."
   (let (output)
     (dolist (item attributes (mapconcat 'identity (nreverse output) "\n"))
@@ -433,6 +433,7 @@ possible.  It doesn't apply to `inlinetask' elements."
 
 (defun org-rst--text-markup (text markup info)
   "Format TEXT depending on MARKUP text markup.
+INFO is a plist used as a communication channel.
 See `org-rst-text-markup-alist' for details."
   (let ((fmt (cdr (assq markup (plist-get info :rst-text-markup-alist))))
         (text (replace-regexp-in-string "[ \t\n]+" " " text)))
@@ -775,7 +776,7 @@ holding export options."
                    (lines (split-string (org-export-data def info) "\n+[ \t\n]*"))
                    (fntext (concat (car lines) "\n"
                                    (apply 'concat (mapcar
-                                                   '(lambda (x) (if (> (length x) 0)
+                                                   #'(lambda (x) (if (> (length x) 0)
                                                                     (concat (org-rst--indent-string x org-rst-quote-margin) "\n")))
                                                  (cdr lines)))))
                    )
@@ -1025,11 +1026,11 @@ INFO is a plist holding contextual information."
 		   (if desc (format "`%s <%s>`_" desc destination)
 			 (format "`%s`_" destination)))
 		  ;; Fuzzy link points nowhere.
-		  ('nil
-		   (let ((rawlink
-				  (org-export-data (org-element-property :raw-link link) info)))
-			 (if desc (format "`%s <%s>`_" desc rawlink)
-			   (format "`%s`_" rawlink))))
+		  ;; ('nil
+		  ;;  (let ((rawlink
+		  ;;   	  (org-export-data (org-element-property :raw-link link) info)))
+		  ;;    (if desc (format "`%s <%s>`_" desc rawlink)
+		  ;;      (format "`%s`_" rawlink))))
 		  ;; LINK points to a headline.
 		  (headline
              (if (member type '("custom-id" "id"))
@@ -1088,7 +1089,7 @@ the plist used as a communication channel."
     (let ((lines (split-string contents "\n+[ \t\n]*")))
       (cond ((> (length lines) 2)
              (setq contents (apply 'concat (mapcar
-                                            '(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
+                                            #'(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
                                             lines)))))))
   contents)
 
